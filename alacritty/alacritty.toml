@@ -1,0 +1,164 @@
+# ═══════════════════════════════════════════════════════════════════
+# Alacritty — tez's config
+#   • JetBrains Mono Nerd Font
+#   • Transparent window (X11 + compositor)
+#   • Custom clean dark theme
+#   • Beam cursor — non-blinking, high-vis green
+# ═══════════════════════════════════════════════════════════════════
+
+# ── Window ───────────────────────────────────────────────────────
+[window]
+# Overall window opacity (0.0 – 1.0). Needs a compositor on X11
+# (e.g. picom) for the transparency to show through.
+opacity = 0.85
+
+# Window size on first open (columns x rows)
+# dimensions = { columns = 120, lines = 40 }
+
+# Padding around the terminal content
+padding = { x = 8, y = 4 }
+
+# Center content & grow padding on resize instead of leaving dead space
+dynamic_padding = true
+
+# Snap resizes to whole character cells (no half-cut letters)
+resize_increments = true
+
+# Live config reload — kept on by default
+# live_config_reload = true
+
+# decorations = "Full"   # Full | Yaru | Catppuccin | None
+#decorations = "None"   # uncomment for borderless — needs compositor for bg transparency
+
+# Startup mode: Windowed | Maximized | Fullscreen
+# startup_mode = "Windowed"
+
+# ── Font ────────────────────────────────────────────────────────
+[font]
+normal   = { family = "JetBrainsMono Nerd Font", style = "Regular" }
+bold     = { family = "JetBrainsMono Nerd Font", style = "Bold" }
+italic   = { family = "JetBrainsMono Nerd Font", style = "Italic" }
+bold_italic = { family = "JetBrainsMono Nerd Font", style = "Bold Italic" }
+
+size = 12.0
+
+# Harfbuzz (shaping) — set true if you use non-Latin scripts
+# use_thin_strokes = true    # macOS only, ignored on X11
+
+# ── Colors — custom clean dark scheme ──────────────────────────
+[colors.primary]
+background = "#0d1117"   # deep dark base
+foreground = "#e6edf3"   # soft white text
+
+# ── Normal (0–7) ──────────────────────────────────────────────
+[colors.normal]
+black   = "#161b22"
+red     = "#ff7b72"
+green   = "#7ee787"
+yellow  = "#e3b341"
+blue    = "#79c0ff"
+magenta = "#c0a6f0"
+cyan    = "#96d3e6"
+white   = "#e6edf3"
+
+# ── Bright (8–15) ────────────────────────────────────────────
+[colors.bright]
+black   = "#484f58"
+red     = "#ff9aa2"
+green   = "#a7f0ba"
+yellow  = "#f9e48b"
+blue    = "#a5d6ff"
+magenta = "#d5b4ff"
+cyan    = "#c2e1ff"
+white   = "#ffffff"
+
+# ── Selection ─────────────────────────────────────────────────
+[colors.selection]
+text   = "#0d1117"
+background = "#2d4a6e"
+
+# ── Cursor ────────────────────────────────────────────────────
+[colors.cursor]
+text    = "#0d1117"   # text under the cursor
+cursor  = "#7ee787"   # cursor itself — bright green, pops on dark
+
+# ── Scrolling ──────────────────────────────────────────────────
+[scrolling]
+# Scrollback buffer size (max 100000)
+history = 50000
+
+# Lines scrolled per wheel tick
+multiplier = 3
+
+# ── Cursor shape & behaviour ─────────────────────────────────
+[cursor]
+# Beam style — thin vertical line, good for typing
+style = { shape = "Beam", blinking = "Off" }
+
+# Block cursor when in vi mode (visual selection feels natural)
+vi_mode_style = { shape = "Block", blinking = "Off" }
+
+# ── Vi-mode cursor color (matches normal cursor green) ────────
+[colors.vi_mode_cursor]
+text    = "#0d1117"
+cursor  = "#7ee787"
+
+# ── Search highlights (Ctrl+Shift+F) ────────────────────────────
+[colors.search]
+matches        = { foreground = "#0d1117", background = "#e3b341" }
+focused_match  = { foreground = "#0d1117", background = "#7ee787" }
+
+# ── URL hint labels (mouse.bindings hints below) ───────────────
+[colors.hints]
+start = { foreground = "#0d1117", background = "#e3b341" }
+end   = { foreground = "#e3b341", background = "#0d1117" }
+
+# ── Mouse ─────────────────────────────────────────────────────
+[mouse]
+# Hide the mouse cursor while typing
+hide_when_typing = true
+
+# ── Selection ─────────────────────────────────────────────────
+[selection]
+# Also copy selections to the clipboard, not just primary buffer
+save_to_clipboard = true
+
+# ── Bell ──────────────────────────────────────────────────────
+[bell]
+# Visual bell (flashes the window) instead of audible
+# visual = true
+
+# ── Key bindings ───────────────────────────────────────────────
+# Alacritty's default bindings (copy/paste, search, font size on
+# Ctrl+Plus/Minus/0) still work alongside these.
+[keyboard]
+bindings = [
+  # Ctrl+Shift+V — toggle vi mode (cursor keys + text selection)
+  { key = "V", mods = "Control|Shift", action = "ToggleViMode" },
+
+  # Ctrl+Enter — toggle fullscreen
+  { key = "Enter", mods = "Control", action = "ToggleFullscreen" },
+
+  # Ctrl+Shift+E — open new window
+  { key = "E", mods = "Control|Shift", action = "CreateNewWindow" },
+]
+
+# ── Hints ──────────────────────────────────────────────────────
+# Ctrl+Shift+O — highlight URLs on screen; type the label to open.
+# (Built-in default, shown here for reference.)
+[hints]
+# Keep labels short & home-row friendly
+alphabet = "asdfghjkl"
+
+[[hints.enabled]]
+command = "xdg-open"
+hyperlinks = true
+post_processing = true
+persist = false
+mouse.enabled = true
+binding = { key = "O", mods = "Control|Shift" }
+
+# More suggestions if you want them:
+#   Ctrl+Shift+T  CreateNewTab        (needs 0.17+ tab support)
+#   Ctrl+Shift+W  CloseCurrentTab
+#   Ctrl+Shift+F  Search (default binding, mentioned for reference)
