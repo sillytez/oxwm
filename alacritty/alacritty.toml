@@ -133,8 +133,13 @@ save_to_clipboard = true
 # Ctrl+Plus/Minus/0) still work alongside these.
 [keyboard]
 bindings = [
-  # Ctrl+Shift+V — toggle vi mode (cursor keys + text selection)
-  { key = "V", mods = "Control|Shift", action = "ToggleViMode" },
+  # Ctrl+Shift+Space — toggle vi mode (cursor keys + text selection)
+  # (NOT Ctrl+Shift+V — that must stay as Paste!)
+  { key = "Space", mods = "Control|Shift", action = "ToggleViMode" },
+
+  # Explicit copy/paste (these are the defaults; kept so nothing can shadow them)
+  { key = "C", mods = "Control|Shift", action = "Copy" },
+  { key = "V", mods = "Control|Shift", action = "Paste" },
 
   # Ctrl+Enter — toggle fullscreen
   { key = "Enter", mods = "Control", action = "ToggleFullscreen" },
