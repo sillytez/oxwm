@@ -1,6 +1,6 @@
 # tez's Linux rice — oxwm + SDDM
 
-My full Arch Linux ricing setup: the [oxwm](https://github.com/Rashad-707/oxwm) window
+My full Arch Linux ricing setup: the [oxwm](https://github.com/tonybanters/oxwm) window
 manager, a custom SDDM greeter theme, picom compositor, Alacritty terminal, and
 xsecurelock lock screen — all sharing one GitHub-dark palette.
 
@@ -11,7 +11,7 @@ Everything is X11. No desktop environment — just WM + compositor + display man
 | Component | What | Notes |
 |---|---|---|
 | OS | Arch Linux | kernel printed live in the oxwm bar |
-| Window manager | oxwm (AUR: `oxwm-git`) | Lua config, 9 tags, tiling/tabbed/normie layouts |
+| Window manager | oxwm | Lua config, 9 tags, tiling/tabbed/normie layouts |
 | Display manager | SDDM | custom "tez" greeter theme (QML) |
 | Compositor | picom | glx backend — required for lock screen + terminal transparency |
 | Terminal | Alacritty | JetBrainsMono Nerd Font 12, 0.85 opacity |
@@ -57,72 +57,203 @@ wallpaper.jpg                 the wallpaper (also used by the SDDM theme)
 The SDDM theme lives in `sddm/tez/` here; on my machine it's deployed to
 `/usr/share/sddm/themes/tez/` with the same files plus `background.jpg`.
 
-## Dependencies
+## Install
 
-Core (pacman):
+### 1. Dependencies
+
+Every component here is packaged on basically every distro except oxwm itself
+(see below). Package names by distro:
+
+| Component | Arch | Debian/Ubuntu | Fedora | Void | openSUSE |
+|---|---|---|---|---|---|
+| alacritty | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` |
+| picom | `picom` | `picom` | `picom` | `picom` | `picom` |
+| sddm | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` |
+| rofi | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` |
+| dunst | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` |
+| xsecurelock | `xsecurelock` | `xsecurelock` | `xsecurelock` | `xsecurelock` | (build from source) |
+| maim + xclip | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` |
+| imagemagick | `imagemagick` | `imagemagick` | `ImageMagick` | `ImageMagick` | `ImageMagick` |
+| mpv | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` |
+| playerctl | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` |
+| brightnessctl | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` |
+| xwallpaper | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` |
+| pipewire-pulse | `pipewire-pulse` | `pipewire` | `pipewire-pulse` | `pipewire` | `pipewire` |
+| font | `ttf-jetbrains-mono-nerd` | `fonts-jetbrains-mono` (no nerd glyphs) | `jetbrains-mono-fonts` + nerd font from AUR-like source | nerd-fonts-ttf from [nerdfonts.com](https://www.nerdfonts.com) | `jetbrains-mono-fonts` |
+
+JetBrainsMono Nerd Font is the only awkward one — if your distro doesn't package
+it, grab the release tarball from
+[nerdfonts.com/font-downloads](https://www.nerdfonts.com/font-downloads) and drop
+it in `/usr/local/share/fonts/` (or `~/.local/share/fonts/`), then `fc-cache -f`.
+
+<details>
+<summary>One-liner installs per distro</summary>
 
 ```bash
-sudo pacman -S --needed alacritty picom sddm rofi dunst \
-  xsecurelock maim xclip imagemagick mpv playerctl \
-  brightnessctl xwallpaper pactl
+# Arch
+sudo pacman -S --needed alacritty picom sddm rofi dunst xsecurelock \
+  maim xclip imagemagick mpv playerctl brightnessctl xwallpaper \
+  pipewire-pulse ttf-jetbrains-mono-nerd
+
+# Debian / Ubuntu
+sudo apt install alacritty picom sddm rofi dunst xsecurelock \
+  maim xclip imagemagick mpv playerctl brightnessctl xwallpaper \
+  pipewire fonts-jetbrains-mono
+
+# Fedora
+sudo dnf install alacritty picom sddm rofi dunst xsecurelock \
+  maim xclip ImageMagick mpv playerctl brightnessctl xwallpaper \
+  pipewire-pulse jetbrains-mono-fonts
+
+# Void
+sudo xbps-install alacritty picom sddm rofi dunst xsecurelock \
+  maim xclip ImageMagick mpv playerctl brightnessctl xwallpaper \
+  pipewire
+
+# openSUSE
+sudo zypper install alacritty picom sddm rofi dunst \
+  maim xclip ImageMagick mpv playerctl brightnessctl xwallpaper pipewire
 ```
+</details>
 
-- `pactl` comes from `pulseaudio`/`pipewire-pulse` (volume keys)
-- `mpv`, `maim`, `imagemagick` are used by the lock screen script
-- Font: `ttf-jetbrains-mono-nerd` (pacman)
+### 2. oxwm
 
-AUR:
+Arch has it in the AUR:
 
 ```bash
-paru -S oxwm-git   # the window manager itself
+paru -S oxwm-git        # or: yay -S oxwm-git
 ```
 
-## Install (manual)
+Elsewhere, build from source. oxwm is Zig, so install a Zig toolchain first
+(`zig` — packaged on Arch/Fedora/VOID as `zig`, Debian as `zig`):
 
-1. Clone and copy the configs:
+```bash
+git clone https://github.com/tonybanters/oxwm
+cd oxwm
+zig build -Doptimize=ReleaseFast --prefix /usr
+```
 
-   ```bash
-   git clone https://github.com/sillytez/oxwm-sddm.git
-   cd oxwm-sddm
+Debian/Ubuntu users: install `zig` from
+[ziglang.org/download](https://ziglang.org/download/) (the distro package is
+often too old) or use [andrewrk's PPA-free static builds](https://ziglang.org/download/).
 
-   mkdir -p ~/.config
-   cp -r alacritty  ~/.config/
-   cp -r oxwm       ~/.config/
-   cp -r picom      ~/.config/
-   chmod +x ~/.config/oxwm/lock.sh ~/.config/oxwm/bookmarks.sh
-   ```
+### 3. The configs
 
-2. Wallpaper — the oxwm autostart expects `~/walls/whysoetude247.jpg`:
+```bash
+git clone https://github.com/sillytez/oxwm-sddm.git
+cd oxwm-sddm
 
-   ```bash
-   mkdir -p ~/walls
-   cp wallpaper.jpg ~/walls/whysoetude247.jpg
-   ```
+mkdir -p ~/.config
+cp -r alacritty  ~/.config/
+cp -r oxwm       ~/.config/
+cp -r picom      ~/.config/
+chmod +x ~/.config/oxwm/lock.sh ~/.config/oxwm/bookmarks.sh
+```
 
-   (or edit the `xwallpaper` line at the bottom of `~/.config/oxwm/config.lua`)
+Wallpaper — the oxwm autostart expects `~/walls/whysoetude247.jpg`:
 
-3. SDDM theme — copy to the system themes dir and select it:
+```bash
+mkdir -p ~/walls
+cp wallpaper.jpg ~/walls/whysoetude247.jpg
+```
 
-   ```bash
-   sudo mkdir -p /usr/share/sddm/themes/tez
-   sudo cp sddm/tez/* /usr/share/sddm/themes/tez/
-   sudo cp wallpaper.jpg /usr/share/sddm/themes/tez/background.jpg
-   sudo cp sddm.conf.d/tez-theme.conf /etc/sddm.conf.d/
-   ```
+(or edit the `xwallpaper` line at the bottom of `~/.config/oxwm/config.lua`)
 
-   Make sure SDDM runs on X11 (`/etc/sddm.conf`: `DisplayServer=x11`).
+### 4. SDDM theme
 
-4. Enable SDDM and reboot into oxwm:
+Copy to the system themes dir and select it:
 
-   ```bash
-   sudo systemctl enable sddm
-   ```
+```bash
+sudo mkdir -p /usr/share/sddm/themes/tez
+sudo cp sddm/tez/* /usr/share/sddm/themes/tez/
+sudo cp wallpaper.jpg /usr/share/sddm/themes/tez/background.jpg
+sudo cp sddm.conf.d/tez-theme.conf /etc/sddm.conf.d/
+```
 
-   Pick oxwm in the SDDM session menu. oxwm also ships
-   `/usr/share/xsessions/oxwm.desktop` so the session shows up automatically.
+Make sure SDDM runs on X11 (`/etc/sddm.conf`: `DisplayServer=x11`), then:
 
-5. Log in — picom, xwallpaper, and dunst start from the oxwm autostart at the
-   bottom of `config.lua`.
+```bash
+sudo systemctl enable sddm
+```
+
+Pick oxwm in the SDDM session menu on the greeter. oxwm ships an
+`oxwm.desktop` xsession file so it appears automatically.
+
+<details>
+<summary>No display manager? startx instead</summary>
+
+If you don't want SDDM (or any DM), use xinit. Create `~/.xinitrc`:
+
+```bash
+# ~/.xinitrc
+exec dbus-launch oxwm
+```
+
+Then `startx` from the TTY. picom/xwallpaper/dunst still start from oxwm's
+autostart, so nothing else is needed. (On Arch: `sudo pacman -S xorg-xinit`.)
+</details>
+
+## Using the pieces with a different WM or DE
+
+oxwm-specific files are `oxwm/` only — everything else is portable. Pick what
+you want:
+
+### The terminal, palette, and wallpaper — any WM/DE
+
+`alacritty/` works everywhere Alacritty runs (X11 or Wayland). Copy it in and
+you have the theme; opacity works out of the box on Wayland compositors or with
+any compositor on X11.
+
+### The compositor — any standalone X11 WM
+
+`picom.conf` drops into `~/.config/picom/` under i3, bspwm, dwm, Awesome,
+openbox, or anything else — just make sure picom starts (most WM configs have
+an `exec`/`exec_always` line for it, or your WM's autostart hook).
+
+### The lock screen — any X11 session
+
+`oxwm/lock.sh` has no oxwm dependency. Bind it to whatever your WM/DE uses:
+
+- **i3**: `bindsym $mod+Shift+l exec --no-startup-id ~/.config/oxwm/lock.sh`
+  (the script can live anywhere; keep it executable)
+- **bspwm**: `bspc config` doesn't do hotkeys — bind in sxhkd:
+  `super + shift + l /home/you/.config/oxwm/lock.sh`
+- **dwm**: add to config.h's keys array:
+  `{ MODKEY|ShiftMask, XK_l, spawn, SHCMD("/home/you/.config/oxwm/lock.sh") }`
+- **Awesome**: `awful.key({ modkey, "Shift" }, "l", function() awful.spawn.with_shell("/home/you/.config/oxwm/lock.sh") end)`
+- **Xfce**: Settings → Keyboard → Application Shortcuts → add the script path
+- **GNOME/KDE**: use your session's own locker instead (gnome-shell's or
+  kscreensaver) — xsecurelock works there too, but you have to fight the
+  session's built-in locker for the lock signal; not worth it unless you
+  disable theirs first.
+
+It still requires picom on the glx backend (see gotchas below).
+
+### The launcher — any WM/DE
+
+`rofi -show drun` and `rofi -show filebrowser` work anywhere. The bookmarks
+mode needs the script:
+
+```bash
+rofi -show bookmarks -modi bookmarks:$HOME/.config/oxwm/bookmarks.sh
+```
+
+### The SDDM theme — independent of the WM
+
+The greeter theme doesn't care what session you log into. The install steps in
+"Install" above work the same whether you run oxwm, i3, or KDE — you just pick
+a different session on the login screen.
+
+### Porting the palette to another WM
+
+The colors, if you want to translate them into your WM's config format:
+
+```
+bg     #0d1117    red     #ff7b72    grey  #484f58
+fg     #e6edf3    cyan    #96d3e6    sep   #21262d
+green  #7ee787    blue    #79c0ff    (light blue #a5d6ff)
+yellow #e3b341    purple  #c0a6f0    orange #ffa657
+```
 
 ## Keybinds (oxwm)
 
