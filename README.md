@@ -64,22 +64,22 @@ The SDDM theme lives in `sddm/tez/` here; on my machine it's deployed to
 Every component here is packaged on basically every distro except oxwm itself
 (see below). Package names by distro:
 
-| Component | Arch | Artix | Debian/Ubuntu | Fedora | Void | openSUSE | Gentoo | Alpine | NixOS |
-|---|---|---|---|---|---|---|---|---|---|
-| alacritty | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` |
-| picom | `picom` | `picom` | `picom` | `picom` | `picom` | `picom` | `picom` | `picom` | `picom` |
-| sddm | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` |
-| rofi | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` |
-| dunst | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` |
-| xsecurelock | `xsecurelock` | `xsecurelock` | `xsecurelock` | `xsecurelock` | `xsecurelock` | (build from source) | `xsecurelock` | (build from source) | `xsecurelock` |
-| maim + xclip | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` |
-| imagemagick | `imagemagick` | `imagemagick` | `imagemagick` | `ImageMagick` | `ImageMagick` | `ImageMagick` | `imagemagick` | `imagemagick` | `imagemagick` |
-| mpv | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` |
-| playerctl | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` |
-| brightnessctl | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` |
-| xwallpaper | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` |
-| pipewire-pulse | `pipewire-pulse` | `pipewire-pulse` | `pipewire` | `pipewire-pulse` | `pipewire` | `pipewire` | `pipewire` | `pipewire` | `pipewire` |
-| font | `ttf-jetbrains-mono-nerd` | `ttf-jetbrains-mono-nerd` | `fonts-jetbrains-mono` (no nerd glyphs) | `jetbrains-mono-fonts` + nerd font from AUR-like source | nerd-fonts-ttf from [nerdfonts.com](https://www.nerdfonts.com) | `jetbrains-mono-fonts` | `media-fonts/jetbrains-mono` | `font-jetbrains-mono-nerd` | `(nerdfonts.override { fonts = [ "JetBrainsMono" ]; })` |
+| Component | Arch | Artix | Manjaro | Debian/Ubuntu | Fedora | RHEL/Rocky/Alma | Void | openSUSE | Gentoo | Slackware | Solus | Clear Linux | Alpine | NixOS |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| alacritty | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` (EPEL) | `alacritty` | `alacritty` | `alacritty` | `alacritty` (SBo) | `alacritty` | `alacritty` | `alacritty` | `alacritty` |
+| picom | `picom` | `picom` | `picom` | `picom` | `picom` | (build from source) | `picom` | `picom` | `picom` | `picom` (SBo) | `picom` | (build from source) | `picom` | `picom` |
+| sddm | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` (EPEL) | `sddm` | `sddm` | `sddm` | `sddm` (SBo) | `sddm` | (build from source) | `sddm` | `sddm` |
+| rofi | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` (EPEL) | `rofi` | `rofi` | `rofi` | `rofi` (SBo) | `rofi` | (build from source) | `rofi` | `rofi` |
+| dunst | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` (EPEL) | `dunst` | `dunst` | `dunst` | `dunst` (SBo) | `dunst` | (build from source) | `dunst` | `dunst` |
+| xsecurelock | `xsecurelock` | `xsecurelock` | `xsecurelock` | `xsecurelock` | `xsecurelock` | (build from source) | `xsecurelock` | (build from source) | `xsecurelock` | (build from source) | (build from source) | (build from source) | (build from source) | `xsecurelock` |
+| maim + xclip | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` (EPEL) | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` (SBo) | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` |
+| imagemagick | `imagemagick` | `imagemagick` | `imagemagick` | `imagemagick` | `ImageMagick` | `ImageMagick` | `ImageMagick` | `ImageMagick` | `imagemagick` | `imagemagick` (SBo) | `imagemagick` | `imagemagick` | `imagemagick` | `imagemagick` |
+| mpv | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` (EPEL/RPM Fusion) | `mpv` | `mpv` | `mpv` | `mpv` (SBo) | `mpv` | `mpv` | `mpv` | `mpv` |
+| playerctl | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` (EPEL) | `playerctl` | `playerctl` | `playerctl` | `playerctl` (SBo) | `playerctl` | (build from source) | `playerctl` | `playerctl` |
+| brightnessctl | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` (EPEL) | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` (SBo) | `brightnessctl` | (build from source) | `brightnessctl` | `brightnessctl` |
+| xwallpaper | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | (build from source) | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` (SBo) | (build from source) | (build from source) | `xwallpaper` | `xwallpaper` |
+| pipewire-pulse | `pipewire-pulse` | `pipewire-pulse` | `pipewire-pulse` | `pipewire` | `pipewire-pulse` | `pipewire-pulse` | `pipewire` | `pipewire` | `pipewire` | `pipewire` (SBo) | `pipewire` | `pipewire` | `pipewire` | `pipewire` |
+| font | `ttf-jetbrains-mono-nerd` | `ttf-jetbrains-mono-nerd` | `ttf-jetbrains-mono-nerd` | `fonts-jetbrains-mono` (no nerd glyphs) | `jetbrains-mono-fonts` + nerd font from AUR-like source | `jetbrains-mono-fonts` (EPEL) + nerd font manual | nerd-fonts-ttf from [nerdfonts.com](https://www.nerdfonts.com) | `jetbrains-mono-fonts` | `media-fonts/jetbrains-mono` | `font-jetbrains-mono` (SBo) | `jetbrains-mono` | `jetbrains-mono` | `font-jetbrains-mono-nerd` | `(nerdfonts.override { fonts = [ "JetBrainsMono" ]; })` |
 
 JetBrainsMono Nerd Font is the only awkward one — if your distro doesn't package
 it, grab the release tarball from
@@ -129,6 +129,32 @@ sudo emerge alacritty picom sddm rofi dunst xsecurelock \
 sudo apk add alacritty picom sddm rofi dunst maim xclip imagemagick \
   mpv playerctl brightnessctl xwallpaper pipewire font-jetbrains-mono-nerd
 # xsecurelock — build from source on Alpine (not in main/community)
+
+# Manjaro (same as Arch — uses pacman + AUR)
+sudo pacman -S --needed alacritty picom sddm rofi dunst xsecurelock \
+  maim xclip imagemagick mpv playerctl brightnessctl xwallpaper \
+  pipewire-pulse ttf-jetbrains-mono-nerd
+paru -S oxwm-git    # AUR helper (or yay)
+
+# RHEL / Rocky / Alma
+sudo dnf install epel-release
+sudo dnf install alacritty sddm rofi dunst maim xclip ImageMagick \
+  mpv playerctl brightnessctl pipewire-pulse jetbrains-mono-fonts
+# xsecurelock, picom, xwallpaper — build from source on RHEL family
+
+# Slackware (via SBo / sbopkg)
+sbopkg -i alacritty picom sddm rofi dunst maim xclip imagemagick \
+  mpv playerctl brightnessctl xwallpaper pipewire font-jetbrains-mono
+# xsecurelock — build from source on Slackware
+
+# Solus
+sudo eopkg install alacritty picom sddm rofi dunst maim xclip \
+  imagemagick mpv playerctl brightnessctl pipewire jetbrains-mono
+# xsecurelock, xwallpaper — build from source on Solus
+
+# Clear Linux
+sudo swupd bundle-add alacritty sddm rofi mpv playerctl imagemagick
+# picom, dunst, xsecurelock, maim, xclip, xwallpaper — build from source on Clear
 
 # NixOS (in configuration.nix or a flake)
 #   Add to environment.systemPackages:
