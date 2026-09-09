@@ -30,7 +30,7 @@
 | 🖼️ **Wallpaper** | xwallpaper — autostarted by oxwm |
 | 🔤 **Font** | JetBrains Mono / JetBrainsMono Nerd Font — everywhere |
 
-## 🎨 Palette
+## Palette
 
 The one palette every component uses (GitHub dark):
 
@@ -48,7 +48,7 @@ The one palette every component uses (GitHub dark):
 
 Alacritty is the source of truth — the oxwm bar and SDDM theme adopt its colors.
 
-## 📋 Table of contents
+## Table of contents
 
 - [Palette](#palette)
 - [Repo layout](#repo-layout)
@@ -64,7 +64,7 @@ Alacritty is the source of truth — the oxwm bar and SDDM theme adopt its color
 - [Keybinds (oxwm)](#keybinds-oxwm)
 - [Notes / gotchas](#notes--gotchas)
 
-## 📁 Repo layout
+## Repo layout
 
 ```
 alacritty/alacritty.toml        terminal config
@@ -83,7 +83,7 @@ wallpaper.jpg                   the wallpaper (also used by the SDDM theme)
 The SDDM theme lives in `sddm/tez/` here; on my machine it's deployed to
 `/usr/share/sddm/themes/tez/` with the same files plus `background.jpg`.
 
-## 📦 Install
+## Install
 
 ### 1. Dependencies
 
@@ -330,7 +330,7 @@ Then `startx` from the TTY. picom/xwallpaper/dunst still start from oxwm's
 autostart, so nothing else is needed. (On Arch: `sudo pacman -S xorg-xinit`.)
 </details>
 
-## 📝 Step-by-step per distro
+## Step-by-step per distro
 
 Each tab walks through the full install end to end: dependencies → oxwm →
 configs → SDDM theme. If you just want a quick package list, see the
@@ -772,7 +772,7 @@ sudo nixos-rebuild switch
 
 </details>
 
-## 🖧 Using the pieces with a different WM or DE
+## Using the pieces with a different WM or DE
 
 oxwm-specific files are `oxwm/` only — everything else is portable. Below are
 step-by-step guides for integrating the alacritty config, picom compositor,
@@ -792,7 +792,7 @@ desktop environments.
 
 ---
 
-## 🪟 Window Managers
+## Window Managers
 
 <details>
 <summary>i3 / i3-gaps</summary>
@@ -1071,7 +1071,7 @@ menu.
 
 ---
 
-## 🖥️ Desktop Environments
+## Desktop Environments
 
 <details>
 <summary>GNOME</summary>
@@ -1321,7 +1321,7 @@ green  #7ee787    blue    #79c0ff    (light blue #a5d6ff)
 yellow #e3b341    purple  #c0a6f0    orange #ffa657
 ```
 
-## ⌨️ Keybinds (oxwm)
+## Keybinds (oxwm)
 
 | Keys | Action |
 |---|---|
@@ -1341,7 +1341,7 @@ yellow #e3b341    purple  #c0a6f0    orange #ffa657
 
 `Mod` is Super (Mod4). Volume and brightness media keys are bound too.
 
-## ⚠️ Notes / gotchas
+## Notes / gotchas
 
 - **picom must use the glx backend** (`picom.conf` here): the xrender backend
   draws over xsecurelock's windows and breaks the lock screen.
