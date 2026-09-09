@@ -8,7 +8,7 @@
   <a href="https://github.com/tonybanters/oxwm"><img alt="oxwm" src="https://img.shields.io/badge/WM-oxwm-c0a6f0?style=flat"></a>
   <img alt="X11" src="https://img.shields.io/badge/X11-only-0d1117?style=flat">
   <img alt="GitHub Dark" src="https://img.shields.io/badge/palette-GitHub_Dark-0d1117?style=flat&labelColor=0d1117&color=7ee787">
-  <img alt="License" src="https://img.shields.io/badge/license-GPL--3.0-blue?style=flat">
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-blue?style=flat">
 </p>
 
 > A complete X11 ricing setup: the [oxwm](https://github.com/tonybanters/oxwm) window
@@ -1351,5 +1351,9 @@ yellow #e3b341    purple  #c0a6f0    orange #ffa657
   auth box.
 - The lock screen's font is plain `JetBrains Mono` (not the Nerd Font) —
   Xft rejects color fonts.
+- **`wallpaper.jpg` is not my work** — I found it online. All credit goes
+  to its original creator. Replace it with your own if you redistribute.
+- [oxwm](https://github.com/tonybanters/oxwm) is GPL-3.0 (not mine) — this
+  repo only contains my configuration files, which are MIT licensed.
 - My terminal config is also published separately at
   [sillytez/alacritty](https://github.com/sillytez/alacritty).
