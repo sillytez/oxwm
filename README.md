@@ -1,26 +1,22 @@
 # tez's Linux rice — oxwm + SDDM
 
-My full Arch Linux ricing setup: the [oxwm](https://github.com/tonybanters/oxwm) window
-manager, a custom SDDM greeter theme, picom compositor, Alacritty terminal, and
-xsecurelock lock screen — all sharing one GitHub-dark palette.
+> A complete X11 ricing setup: the [oxwm](https://github.com/tonybanters/oxwm) window
+> manager, a custom SDDM greeter theme, picom compositor, Alacritty terminal, and
+> xsecurelock lock screen — all sharing one cohesive GitHub-dark palette.
 
-Everything is X11. No desktop environment — just WM + compositor + display manager.
-
-## What I'm using
-
-| Component | What | Notes |
-|---|---|---|
-| OS | Arch Linux | kernel printed live in the oxwm bar |
-| Window manager | oxwm | Lua config, 9 tags, tiling/tabbed/normie layouts |
-| Display manager | SDDM | custom "tez" greeter theme (QML) |
-| Compositor | picom | glx backend — required for lock screen + terminal transparency |
-| Terminal | Alacritty | JetBrainsMono Nerd Font 12, 0.85 opacity |
-| Launcher | rofi | `drun`, `filebrowser`, and a custom bookmarks mode |
-| Lock screen | xsecurelock | blurred screenshot of the live screen + mpv |
-| Notifications | dunst | autostarted by oxwm |
-| Screenshots | maim + xclip | region to clipboard, or file with Shift |
-| Wallpaper | xwallpaper | autostarted by oxwm |
-| Font | JetBrains Mono / JetBrainsMono Nerd Font | terminal, bar, greeter, lock screen |
+| | |
+|---|---|
+| **Session** | X11 only — no desktop environment, just WM + compositor + display manager |
+| **WM** | [oxwm](https://github.com/tonybanters/oxwm) — Lua config, 9 tags, tiling/tabbed/normie layouts |
+| **Display manager** | SDDM with a custom "tez" QML greeter theme |
+| **Compositor** | picom (glx backend — required for lock screen + terminal transparency) |
+| **Terminal** | Alacritty — JetBrainsMono Nerd Font 12, 0.85 opacity |
+| **Launcher** | rofi — `drun`, `filebrowser`, and a custom bookmarks mode |
+| **Lock screen** | xsecurelock — blurred screenshot of the live screen + mpv |
+| **Notifications** | dunst — autostarted by oxwm |
+| **Screenshots** | maim + xclip — region to clipboard, or file with Shift |
+| **Wallpaper** | xwallpaper — autostarted by oxwm |
+| **Font** | JetBrains Mono / JetBrainsMono Nerd Font — terminal, bar, greeter, lock screen |
 
 ## Palette
 
@@ -38,20 +34,35 @@ The one palette every component uses (GitHub dark):
 
 Alacritty is the source of truth — the oxwm bar and SDDM theme adopt its colors.
 
+## Table of contents
+
+- [Repo layout](#repo-layout)
+- [Install](#install)
+  - [1. Dependencies](#1-dependencies)
+  - [2. oxwm](#2-oxwm)
+  - [3. The configs](#3-the-configs)
+  - [4. SDDM theme](#4-sddm-theme)
+- [Step-by-step per distro](#step-by-step-per-distro)
+- [Using the pieces with a different WM or DE](#using-the-pieces-with-a-different-wm-or-de)
+  - [Window Managers](#window-managers)
+  - [Desktop Environments](#desktop-environments)
+- [Keybinds (oxwm)](#keybinds-oxwm)
+- [Notes / gotchas](#notes--gotchas)
+
 ## Repo layout
 
 ```
-alacritty/alacritty.toml      terminal config
-oxwm/config.lua               window manager config (keys, bar, rules, autostart)
-oxwm/lock.sh                  lock screen script (Mod+Shift+L)
-oxwm/bookmarks.sh             rofi bookmarks mode (Mod+F then B)
-picom/picom.conf              compositor config
-sddm/tez/Main.qml             SDDM greeter theme
-sddm/tez/theme.conf            theme colors
-sddm/tez/metadata.desktop      theme metadata
-sddm/tez/angle-down.png        dropdown arrow asset
-sddm.conf.d/tez-theme.conf     SDDM theme selection (drop in /etc/sddm.conf.d/)
-wallpaper.jpg                 the wallpaper (also used by the SDDM theme)
+alacritty/alacritty.toml        terminal config
+oxwm/config.lua                 window manager config (keys, bar, rules, autostart)
+oxwm/lock.sh                    lock screen script (Mod+Shift+L)
+oxwm/bookmarks.sh               rofi bookmarks mode (Mod+F then B)
+picom/picom.conf                compositor config
+sddm/tez/Main.qml               SDDM greeter theme
+sddm/tez/theme.conf             theme colors
+sddm/tez/metadata.desktop       theme metadata
+sddm/tez/angle-down.png         dropdown arrow asset
+sddm.conf.d/tez-theme.conf      SDDM theme selection (drop in /etc/sddm.conf.d/)
+wallpaper.jpg                   the wallpaper (also used by the SDDM theme)
 ```
 
 The SDDM theme lives in `sddm/tez/` here; on my machine it's deployed to
@@ -934,7 +945,7 @@ set $lockswaylock swaylock --image ~/walls/whysoetude247.jpg \
 bindsym $mod+Shift+l exec $lockswaylock
 ```
 
-**4. Rfi** — add to sway config (rofi works under Wayland with the
+**4. Rofi** — add to sway config (rofi works under Wayland with the
 `rofi-wayland` package or `rofi` with Wayland support):
 
 ```bash
@@ -1115,7 +1126,6 @@ cp alacritty/alacritty.toml ~/.config/alacritty/
 **2. Wallpaper** — set via KDE settings or command:
 
 ```bash
-# Plasma 5
 plasma-apply-wallpaperimage ~/walls/whysoetude247.jpg
 # or: System Settings → Wallpaper → Browse → select the file
 ```
@@ -1295,7 +1305,6 @@ fg     #e6edf3    cyan    #96d3e6    sep   #21262d
 green  #7ee787    blue    #79c0ff    (light blue #a5d6ff)
 yellow #e3b341    purple  #c0a6f0    orange #ffa657
 ```
-
 
 ## Keybinds (oxwm)
 
