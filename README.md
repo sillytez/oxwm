@@ -64,22 +64,22 @@ The SDDM theme lives in `sddm/tez/` here; on my machine it's deployed to
 Every component here is packaged on basically every distro except oxwm itself
 (see below). Package names by distro:
 
-| Component | Arch | Debian/Ubuntu | Fedora | Void | openSUSE |
-|---|---|---|---|---|---|
-| alacritty | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` |
-| picom | `picom` | `picom` | `picom` | `picom` | `picom` |
-| sddm | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` |
-| rofi | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` |
-| dunst | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` |
-| xsecurelock | `xsecurelock` | `xsecurelock` | `xsecurelock` | `xsecurelock` | (build from source) |
-| maim + xclip | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` |
-| imagemagick | `imagemagick` | `imagemagick` | `ImageMagick` | `ImageMagick` | `ImageMagick` |
-| mpv | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` |
-| playerctl | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` |
-| brightnessctl | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` |
-| xwallpaper | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` |
-| pipewire-pulse | `pipewire-pulse` | `pipewire` | `pipewire-pulse` | `pipewire` | `pipewire` |
-| font | `ttf-jetbrains-mono-nerd` | `fonts-jetbrains-mono` (no nerd glyphs) | `jetbrains-mono-fonts` + nerd font from AUR-like source | nerd-fonts-ttf from [nerdfonts.com](https://www.nerdfonts.com) | `jetbrains-mono-fonts` |
+| Component | Arch | Debian/Ubuntu | Fedora | Void | openSUSE | NixOS |
+|---|---|---|---|---|---|---|
+| alacritty | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` |
+| picom | `picom` | `picom` | `picom` | `picom` | `picom` | `picom` |
+| sddm | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` |
+| rofi | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` |
+| dunst | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` |
+| xsecurelock | `xsecurelock` | `xsecurelock` | `xsecurelock` | `xsecurelock` | (build from source) | `xsecurelock` |
+| maim + xclip | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` |
+| imagemagick | `imagemagick` | `imagemagick` | `ImageMagick` | `ImageMagick` | `ImageMagick` | `imagemagick` |
+| mpv | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` |
+| playerctl | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` |
+| brightnessctl | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` |
+| xwallpaper | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` |
+| pipewire-pulse | `pipewire-pulse` | `pipewire` | `pipewire-pulse` | `pipewire` | `pipewire` | `pipewire` |
+| font | `ttf-jetbrains-mono-nerd` | `fonts-jetbrains-mono` (no nerd glyphs) | `jetbrains-mono-fonts` + nerd font from AUR-like source | nerd-fonts-ttf from [nerdfonts.com](https://www.nerdfonts.com) | `jetbrains-mono-fonts` | `(nerdfonts.override { fonts = [ "JetBrainsMono" ]; })` |
 
 JetBrainsMono Nerd Font is the only awkward one — if your distro doesn't package
 it, grab the release tarball from
@@ -113,6 +113,13 @@ sudo xbps-install alacritty picom sddm rofi dunst xsecurelock \
 # openSUSE
 sudo zypper install alacritty picom sddm rofi dunst \
   maim xclip ImageMagick mpv playerctl brightnessctl xwallpaper pipewire
+
+# NixOS (in configuration.nix or a flake)
+#   Add to environment.systemPackages:
+#   alacritty picom sddm rofi dunst xsecurelock maim xclip
+#   imagemagick mpv playerctl brightnessctl xwallpaper
+#   (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+#   See the "NixOS" section under oxwm above for building oxwm from source
 ```
 </details>
 
@@ -136,6 +143,46 @@ zig build -Doptimize=ReleaseFast --prefix /usr
 Debian/Ubuntu users: install `zig` from
 [ziglang.org/download](https://ziglang.org/download/) (the distro package is
 often too old) or use [andrewrk's PPA-free static builds](https://ziglang.org/download/).
+
+<details>
+<summary>NixOS</summary>
+
+oxwm isn't in nixpkgs — build it from source with a custom derivation:
+
+```nix
+# flake.nix or configuration.nix
+{ pkgs, ... }:
+let
+  oxwm = pkgs.stdenv.mkDerivation {
+    pname = "oxwm";
+    version = "unstable";
+    src = pkgs.fetchFromGitHub {
+      owner = "tonybanters";
+      repo = "oxwm";
+      rev = "main";          # pin to a specific commit for reproducibility
+      hash = "";             # let it fail once, then paste the correct hash
+    };
+    nativeBuildInputs = [ pkgs.zig ];
+    buildPhase = "zig build -Doptimize=ReleaseFast";
+    installPhase = "zig build -Doptimize=ReleaseFast --prefix $out";
+  };
+in {
+  environment.systemPackages = with pkgs; [
+    oxwm
+    # deps (see the dependency table above — all are in nixpkgs):
+    alacritty picom sddm rofi dunst xsecurelock maim xclip
+    imagemagick mpv playerctl brightnessctl xwallpaper
+    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+  ];
+}
+```
+
+> **oxwm.desktop / xsession:** oxwm ships an `oxwm.desktop` xsession file so it
+> appears in SDDM's session menu automatically. If it doesn't, add it manually
+> to `/usr/share/xsessions/` (or the nixpkgs equivalent in
+> `/run/current-system/sw/share/xsessions/`).
+
+</details>
 
 ### 3. The configs
 
@@ -178,6 +225,42 @@ sudo systemctl enable sddm
 
 Pick oxwm in the SDDM session menu on the greeter. oxwm ships an
 `oxwm.desktop` xsession file so it appears automatically.
+
+<details>
+<summary>NixOS — SDDM theme</summary>
+
+NixOS doesn't use `/usr/share/sddm/themes/` — everything goes through the Nix
+store. Package the theme as a derivation and point SDDM at it:
+
+```nix
+# in your configuration.nix or a custom module
+{ pkgs, ... }:
+let
+  tez-sddm-theme = pkgs.stdenv.mkDerivation {
+    pname = "sddm-theme-tez";
+    version = "1.0";
+    src = pkgs.fetchFromGitHub {
+      owner = "sillytez";
+      repo = "oxwm-sddm";
+      rev = "main";
+      hash = "";             # let it fail once, then paste the correct hash
+    };
+    installPhase = ''
+      mkdir -p $out/share/sddm/themes/tez
+      cp -r sddm/tez/* $out/share/sddm/themes/tez/
+      cp wallpaper.jpg $out/share/sddm/themes/tez/background.jpg
+    '';
+  };
+in {
+  services.xserver.displayManager.sddm = {
+    enable = true;
+    theme = "tez";
+  };
+  environment.systemPackages = [ tez-sddm-theme ];
+}
+```
+
+</details>
 
 <details>
 <summary>No display manager? startx instead</summary>
