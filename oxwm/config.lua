@@ -105,7 +105,7 @@ oxwm.gaps.set_inner(5, 5)
 oxwm.gaps.set_outer(5, 5)
 
 oxwm.rule.add({ instance = "gimp", floating = true })
-oxwm.rule.add({ class = "firefox", tag = 3 })
+oxwm.rule.add({ class = "helium", tag = 3 })
 oxwm.rule.add({ class = "Alacritty", tag = 0 })
 
 oxwm.bar.set_font(bar_font)
