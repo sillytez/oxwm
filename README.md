@@ -1352,4 +1352,4 @@ yellow #e3b341    purple  #c0a6f0    orange #ffa657
 - The lock screen's font is plain `JetBrains Mono` (not the Nerd Font) —
   Xft rejects color fonts.
 - My terminal config is also published separately at
-  [sillytez/alacritty-config](https://github.com/sillytez/alacritty-config).
+  [sillytez/alacritty](https://github.com/sillytez/alacritty).
