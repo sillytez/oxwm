@@ -1,40 +1,54 @@
 # tez's Linux rice — oxwm + SDDM
 
+<p align="center">
+  <img src="wallpaper.jpg" width="600" alt="tezs wallpaper">
+</p>
+
+<p align="center">
+  <a href="https://github.com/tonybanters/oxwm"><img alt="oxwm" src="https://img.shields.io/badge/WM-oxwm-c0a6f0?style=flat"></a>
+  <img alt="X11" src="https://img.shields.io/badge/X11-only-0d1117?style=flat">
+  <img alt="GitHub Dark" src="https://img.shields.io/badge/palette-GitHub_Dark-0d1117?style=flat&labelColor=0d1117&color=7ee787">
+  <img alt="License" src="https://img.shields.io/badge/license-GPL--3.0-blue?style=flat">
+</p>
+
 > A complete X11 ricing setup: the [oxwm](https://github.com/tonybanters/oxwm) window
 > manager, a custom SDDM greeter theme, picom compositor, Alacritty terminal, and
 > xsecurelock lock screen — all sharing one cohesive GitHub-dark palette.
+>
+> No desktop environment — just WM + compositor + display manager.
 
 | | |
 |---|---|
-| **Session** | X11 only — no desktop environment, just WM + compositor + display manager |
-| **WM** | [oxwm](https://github.com/tonybanters/oxwm) — Lua config, 9 tags, tiling/tabbed/normie layouts |
-| **Display manager** | SDDM with a custom "tez" QML greeter theme |
-| **Compositor** | picom (glx backend — required for lock screen + terminal transparency) |
-| **Terminal** | Alacritty — JetBrainsMono Nerd Font 12, 0.85 opacity |
-| **Launcher** | rofi — `drun`, `filebrowser`, and a custom bookmarks mode |
-| **Lock screen** | xsecurelock — blurred screenshot of the live screen + mpv |
-| **Notifications** | dunst — autostarted by oxwm |
-| **Screenshots** | maim + xclip — region to clipboard, or file with Shift |
-| **Wallpaper** | xwallpaper — autostarted by oxwm |
-| **Font** | JetBrains Mono / JetBrainsMono Nerd Font — terminal, bar, greeter, lock screen |
+| 🪟 **WM** | [oxwm](https://github.com/tonybanters/oxwm) — Lua config, 9 tags, tiling/tabbed/normie layouts |
+| 🔐 **Display manager** | SDDM with a custom "tez" QML greeter theme |
+| ✨ **Compositor** | picom (glx backend — required for lock screen + terminal transparency) |
+| 🖥️ **Terminal** | Alacritty — JetBrainsMono Nerd Font 12, 0.85 opacity |
+| 🔍 **Launcher** | rofi — `drun`, `filebrowser`, and a custom bookmarks mode |
+| 🔒 **Lock screen** | xsecurelock — blurred screenshot of the live screen + mpv |
+| 🔔 **Notifications** | dunst — autostarted by oxwm |
+| 📸 **Screenshots** | maim + xclip — region to clipboard, or file with Shift |
+| 🖼️ **Wallpaper** | xwallpaper — autostarted by oxwm |
+| 🔤 **Font** | JetBrains Mono / JetBrainsMono Nerd Font — everywhere |
 
-## Palette
+## 🎨 Palette
 
 The one palette every component uses (GitHub dark):
 
-| | hex |
-|---|---|
-| background | `#0d1117` |
-| foreground | `#e6edf3` |
-| green (accent) | `#7ee787` |
-| blue | `#79c0ff` |
-| purple | `#c0a6f0` |
-| yellow | `#e3b341` |
-| dim | `#8b949e` |
+| Color | Hex | | Preview |
+|---|---|---|---|
+| background | `#0d1117` | | ![](https://img.shields.io/badge/-%20-0d1117?style=flat-square) |
+| foreground | `#e6edf3` | | ![](https://img.shields.io/badge/-%20-e6edf3?style=flat-square) |
+| green (accent) | `#7ee787` | | ![](https://img.shields.io/badge/-%20-7ee787?style=flat-square) |
+| blue | `#79c0ff` | | ![](https://img.shields.io/badge/-%20-79c0ff?style=flat-square) |
+| purple | `#c0a6f0` | | ![](https://img.shields.io/badge/-%20-c0a6f0?style=flat-square) |
+| yellow | `#e3b341` | | ![](https://img.shields.io/badge/-%20-e3b341?style=flat-square) |
+| red | `#ff7b72` | | ![](https://img.shields.io/badge/-%20-ff7b72?style=flat-square) |
+| cyan | `#96d3e6` | | ![](https://img.shields.io/badge/-%20-96d3e6?style=flat-square) |
+| dim | `#8b949e` | | ![](https://img.shields.io/badge/-%20-8b949e?style=flat-square) |
 
 Alacritty is the source of truth — the oxwm bar and SDDM theme adopt its colors.
 
-## Table of contents
+## 📋 Table of contents
 
 - [Repo layout](#repo-layout)
 - [Install](#install)
@@ -49,7 +63,7 @@ Alacritty is the source of truth — the oxwm bar and SDDM theme adopt its color
 - [Keybinds (oxwm)](#keybinds-oxwm)
 - [Notes / gotchas](#notes--gotchas)
 
-## Repo layout
+## 📁 Repo layout
 
 ```
 alacritty/alacritty.toml        terminal config
@@ -68,7 +82,7 @@ wallpaper.jpg                   the wallpaper (also used by the SDDM theme)
 The SDDM theme lives in `sddm/tez/` here; on my machine it's deployed to
 `/usr/share/sddm/themes/tez/` with the same files plus `background.jpg`.
 
-## Install
+## 📦 Install
 
 ### 1. Dependencies
 
@@ -315,7 +329,7 @@ Then `startx` from the TTY. picom/xwallpaper/dunst still start from oxwm's
 autostart, so nothing else is needed. (On Arch: `sudo pacman -S xorg-xinit`.)
 </details>
 
-## Step-by-step per distro
+## 📝 Step-by-step per distro
 
 Each tab walks through the full install end to end: dependencies → oxwm →
 configs → SDDM theme. If you just want a quick package list, see the
@@ -757,7 +771,7 @@ sudo nixos-rebuild switch
 
 </details>
 
-## Using the pieces with a different WM or DE
+## 🖧 Using the pieces with a different WM or DE
 
 oxwm-specific files are `oxwm/` only — everything else is portable. Below are
 step-by-step guides for integrating the alacritty config, picom compositor,
@@ -777,7 +791,7 @@ desktop environments.
 
 ---
 
-## Window Managers
+## 🪟 Window Managers
 
 <details>
 <summary>i3 / i3-gaps</summary>
@@ -1056,7 +1070,7 @@ menu.
 
 ---
 
-## Desktop Environments
+## 🖥️ Desktop Environments
 
 <details>
 <summary>GNOME</summary>
@@ -1306,7 +1320,7 @@ green  #7ee787    blue    #79c0ff    (light blue #a5d6ff)
 yellow #e3b341    purple  #c0a6f0    orange #ffa657
 ```
 
-## Keybinds (oxwm)
+## ⌨️ Keybinds (oxwm)
 
 | Keys | Action |
 |---|---|
@@ -1326,7 +1340,7 @@ yellow #e3b341    purple  #c0a6f0    orange #ffa657
 
 `Mod` is Super (Mod4). Volume and brightness media keys are bound too.
 
-## Notes / gotchas
+## ⚠️ Notes / gotchas
 
 - **picom must use the glx backend** (`picom.conf` here): the xrender backend
   draws over xsecurelock's windows and breaks the lock screen.
