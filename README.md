@@ -318,6 +318,575 @@ Then `startx` from the TTY. picom/xwallpaper/dunst still start from oxwm's
 autostart, so nothing else is needed. (On Arch: `sudo pacman -S xorg-xinit`.)
 </details>
 
+## Step-by-step per distro
+
+Each tab walks through the full install end to end: dependencies → oxwm →
+configs → SDDM theme. If you just want a quick package list, see the
+one-liner installs above.
+
+<details>
+<summary>Arch Linux</summary>
+
+**1. Dependencies**
+
+```bash
+sudo pacman -S --needed alacritty picom sddm rofi dunst xsecurelock \
+  maim xclip imagemagick mpv playerctl brightnessctl xwallpaper \
+  pipewire-pulse ttf-jetbrains-mono-nerd
+```
+
+**2. oxwm** (from the AUR)
+
+```bash
+paru -S oxwm-git        # or: yay -S oxwm-git
+```
+
+**3. Configs**
+
+```bash
+git clone https://github.com/sillytez/oxwm-sddm.git
+cd oxwm-sddm
+mkdir -p ~/.config
+cp -r alacritty ~/.config/
+cp -r oxwm      ~/.config/
+cp -r picom     ~/.config/
+chmod +x ~/.config/oxwm/lock.sh ~/.config/oxwm/bookmarks.sh
+mkdir -p ~/walls
+cp wallpaper.jpg ~/walls/whysoetude247.jpg
+```
+
+**4. SDDM theme**
+
+```bash
+sudo mkdir -p /usr/share/sddm/themes/tez
+sudo cp sddm/tez/* /usr/share/sddm/themes/tez/
+sudo cp wallpaper.jpg /usr/share/sddm/themes/tez/background.jpg
+sudo cp sddm.conf.d/tez-theme.conf /etc/sddm.conf.d/
+sudo systemctl enable sddm
+```
+
+Log out, pick oxwm in the SDDM session menu, log in.
+
+</details>
+
+<details>
+<summary>Artix Linux</summary>
+
+Same as Arch — Artix uses pacman and the AUR. The only difference is the
+init system (Artix uses OpenRC/runit/s6/dinit instead of systemd), so
+`systemctl enable sddm` becomes:
+
+**1. Dependencies**
+
+```bash
+sudo pacman -S --needed alacritty picom sddm rofi dunst xsecurelock \
+  maim xclip imagemagick mpv playerctl brightnessctl xwallpaper \
+  pipewire-pulse ttf-jetbrains-mono-nerd
+paru -S oxwm-git
+```
+
+**2. Configs** — same as Arch (see above)
+
+**3. SDDM** — same copy steps as Arch, then enable with your init:
+
+```bash
+sudo rc-update add sddm default        # OpenRC
+# or: sudo ln -s /etc/runit/sv/sddm /run/runit/service/   # runit
+# or: sudo s6-rc-bundle add sddm                           # s6
+# or: sudo dinitctl enable sddm                            # dinit
+```
+
+</details>
+
+<details>
+<summary>Manjaro</summary>
+
+Same as Arch — Manjaro uses pacman and the AUR, and ships with systemd.
+
+**1. Dependencies**
+
+```bash
+sudo pacman -S --needed alacritty picom sddm rofi dunst xsecurelock \
+  maim xclip imagemagick mpv playerctl brightnessctl xwallpaper \
+  pipewire-pulse ttf-jetbrains-mono-nerd
+pamac build oxwm-git      # or: paru -S oxwm-git / yay -S oxwm-git
+```
+
+**2. Configs** — same as Arch (see above)
+
+**3. SDDM** — same as Arch (see above), `sudo systemctl enable sddm`
+
+</details>
+
+<details>
+<summary>Debian / Ubuntu</summary>
+
+**1. Dependencies**
+
+```bash
+sudo apt update
+sudo apt install alacritty picom sddm rofi dunst xsecurelock \
+  maim xclip imagemagick mpv playerctl brightnessctl xwallpaper \
+  pipewire fonts-jetbrains-mono
+```
+
+> **Note:** `fonts-jetbrains-mono` on Debian/Ubuntu doesn't include the
+> Nerd Font glyphs. Grab the Nerd Font version from
+> [nerdfonts.com/font-downloads](https://www.nerdfonts.com/font-downloads)
+> and drop it in `~/.local/share/fonts/`, then `fc-cache -f`.
+
+**2. oxwm** (build from source — needs Zig)
+
+```bash
+# Debian's zig package is often too old — grab a newer one from
+# https://ziglang.org/download/ and extract to /usr/local/
+sudo apt install zig
+git clone https://github.com/tonybanters/oxwm
+cd oxwm
+zig build -Doptimize=ReleaseFast --prefix /usr
+```
+
+**3. Configs** — same as Arch (see above)
+
+**4. SDDM theme** — same copy steps as Arch, then:
+
+```bash
+sudo systemctl enable sddm
+```
+
+</details>
+
+<details>
+<summary>Fedora</summary>
+
+**1. Dependencies**
+
+```bash
+sudo dnf install alacritty picom sddm rofi dunst xsecurelock \
+  maim xclip ImageMagick mpv playerctl brightnessctl xwallpaper \
+  pipewire-pulse jetbrains-mono-fonts
+```
+
+> **Font:** `jetbrains-mono-fonts` doesn't include Nerd Font glyphs. Grab
+> the Nerd Font version from
+> [nerdfonts.com/font-downloads](https://www.nerdfonts.com/font-downloads)
+> and drop it in `~/.local/share/fonts/`, then `fc-cache -f`.
+
+**2. oxwm** (build from source — needs Zig)
+
+```bash
+sudo dnf install zig
+git clone https://github.com/tonybanters/oxwm
+cd oxwm
+zig build -Doptimize=ReleaseFast --prefix /usr
+```
+
+**3. Configs** — same as Arch (see above)
+
+**4. SDDM theme** — same copy steps as Arch, then:
+
+```bash
+sudo systemctl enable sddm
+```
+
+</details>
+
+<details>
+<summary>RHEL / Rocky / AlmaLinux</summary>
+
+**1. Enable EPEL, then install dependencies**
+
+```bash
+sudo dnf install epel-release
+sudo dnf config-manager --set-enabled crb      # Rocky/Alma only (CodeReady Builder)
+sudo dnf install alacritty sddm rofi dunst maim xclip ImageMagick \
+  mpv playerctl brightnessctl pipewire-pulse jetbrains-mono-fonts
+```
+
+> **Build from source on RHEL family:** `picom`, `xsecurelock`, and
+> `xwallpaper` are not in EPEL. Build them manually:
+> ```bash
+> # picom
+> sudo dnf install meson ninja-build pkgconf-pkg-config libev-devel \
+>   pixman-devel dbus-devel libconfig-devel libxdg-basedir-devel pcre-devel
+> git clone https://github.com/yshui/picom && cd picom
+> meson setup build --prefix=/usr && ninja -C build && sudo ninja -C build install
+>
+> # xsecurelock
+> git clone https://github.com/xenhorna/xsecurelock && cd xsecurelock
+> ./autogen.sh && ./configure --prefix=/usr && make && sudo make install
+>
+> # xwallpaper
+> sudo dnf install libXrandr-devel libX11-devel libjpeg-turbo-devel
+> git clone https://github.com/unixsurviver/xwallpaper && cd xwallpaper
+> ./autogen.sh && ./configure --prefix=/usr && make && sudo make install
+> ```
+
+**2. oxwm** (build from source — needs Zig)
+
+```bash
+sudo dnf install zig      # or grab a newer one from https://ziglang.org/download/
+git clone https://github.com/tonybanters/oxwm
+cd oxwm
+zig build -Doptimize=ReleaseFast --prefix /usr
+```
+
+**3. Configs** — same as Arch (see above)
+
+**4. SDDM theme** — same copy steps as Arch, then:
+
+```bash
+sudo systemctl enable sddm
+```
+
+</details>
+
+<details>
+<summary>Void Linux</summary>
+
+**1. Dependencies**
+
+```bash
+sudo xbps-install alacritty picom sddm rofi dunst xsecurelock \
+  maim xclip ImageMagick mpv playerctl brightnessctl xwallpaper \
+  pipewire
+```
+
+> **Font:** Install the Nerd Font manually from
+> [nerdfonts.com/font-downloads](https://www.nerdfonts.com/font-downloads)
+> → `~/.local/share/fonts/` → `fc-cache -f`.
+
+**2. oxwm** (build from source — needs Zig)
+
+```bash
+sudo xbps-install zig
+git clone https://github.com/tonybanters/oxwm
+cd oxwm
+zig build -Doptimize=ReleaseFast --prefix /usr
+```
+
+**3. Configs** — same as Arch (see above)
+
+**4. SDDM theme** — same copy steps as Arch, then:
+
+```bash
+sudo ln -s /etc/sv/sddm /var/service/      # runit
+```
+
+</details>
+
+<details>
+<summary>openSUSE</summary>
+
+**1. Dependencies**
+
+```bash
+sudo zypper install alacritty picom sddm rofi dunst \
+  maim xclip ImageMagick mpv playerctl brightnessctl xwallpaper pipewire
+```
+
+> **Font:** `jetbrains-mono-fonts` doesn't include Nerd Font glyphs.
+> Install the Nerd Font manually from
+> [nerdfonts.com/font-downloads](https://www.nerdfonts.com/font-downloads)
+> → `~/.local/share/fonts/` → `fc-cache -f`.
+>
+> **xsecurelock** — not packaged on openSUSE, build from source:
+> ```bash
+> sudo zypper install autoconf automake pkg-config pam-devel
+> git clone https://github.com/xenhorna/xsecurelock && cd xsecurelock
+> ./autogen.sh && ./configure --prefix=/usr && make && sudo make install
+> ```
+
+**2. oxwm** (build from source — needs Zig)
+
+```bash
+sudo zypper install zig
+git clone https://github.com/tonybanters/oxwm
+cd oxwm
+zig build -Doptimize=ReleaseFast --prefix /usr
+```
+
+**3. Configs** — same as Arch (see above)
+
+**4. SDDM theme** — same copy steps as Arch, then:
+
+```bash
+sudo systemctl enable sddm
+```
+
+</details>
+
+<details>
+<summary>Gentoo</summary>
+
+**1. Dependencies**
+
+```bash
+sudo emerge alacritty picom sddm rofi dunst xsecurelock \
+  maim xclip imagemagick mpv playerctl brightnessctl xwallpaper \
+  pipewire media-fonts/jetbrains-mono
+```
+
+> **Nerd Font glyphs:** `media-fonts/jetbrains-mono` doesn't include
+> them. Either grab the Nerd Font from
+> [nerdfonts.com/font-downloads](https://www.nerdfonts.com/font-downloads)
+> or use the `nerd-fonts` overlay:
+> ```bash
+> sudo emerge -av media-fonts/nerd-fonts
+> ```
+
+**2. oxwm** (build from source — needs Zig)
+
+```bash
+sudo emerge zig
+git clone https://github.com/tonybanters/oxwm
+cd oxwm
+zig build -Doptimize=ReleaseFast --prefix /usr
+```
+
+**3. Configs** — same as Arch (see above)
+
+**4. SDDM theme** — same copy steps as Arch, then:
+
+```bash
+sudo systemctl enable sddm        # if using systemd profile
+# or: sudo rc-update add sddm default    # if using OpenRC profile
+```
+
+</details>
+
+<details>
+<summary>Slackware</summary>
+
+**1. Dependencies** (via SBo / sbopkg)
+
+```bash
+# Install sbopkg first if you don't have it:
+# https://sbopkg.org/
+sudo sbopkg -i alacritty picom sddm rofi dunst maim xclip imagemagick \
+  mpv playerctl brightnessctl xwallpaper pipewire font-jetbrains-mono
+```
+
+> **xsecurelock** — not in SBo, build from source:
+> ```bash
+> sudo slackpkg install autoconf automake pkg-config pam
+> git clone https://github.com/xenhorna/xsecurelock && cd xsecurelock
+> ./autogen.sh && ./configure --prefix=/usr && make && sudo make install
+> ```
+
+**2. oxwm** (build from source — needs Zig)
+
+```bash
+# Grab Zig from https://ziglang.org/download/ (Slackware doesn't package it)
+git clone https://github.com/tonybanters/oxwm
+cd oxwm
+zig build -Doptimize=ReleaseFast --prefix /usr
+```
+
+**3. Configs** — same as Arch (see above)
+
+**4. SDDM theme** — same copy steps as Arch, then:
+
+```bash
+# Slackware uses sysvinit — enable sddm in /etc/inittab
+# Edit /etc/inittab: x:5:respawn:/usr/bin/sddm
+# Or if you're at runlevel 4:
+sudo chmod +x /etc/rc.d/rc.sddm
+```
+
+</details>
+
+<details>
+<summary>Solus</summary>
+
+**1. Dependencies**
+
+```bash
+sudo eopkg install alacritty picom sddm rofi dunst maim xclip \
+  imagemagick mpv playerctl brightnessctl pipewire jetbrains-mono
+```
+
+> **xsecurelock, xwallpaper** — not packaged on Solus, build from source:
+> ```bash
+> sudo eopkg install -c system.devel
+> # xsecurelock
+> git clone https://github.com/xenhorna/xsecurelock && cd xsecurelock
+> ./autogen.sh && ./configure --prefix=/usr && make && sudo make install
+> # xwallpaper
+> git clone https://github.com/unixsurviver/xwallpaper && cd xwallpaper
+> ./autogen.sh && ./configure --prefix=/usr && make && sudo make install
+> ```
+
+**2. oxwm** (build from source — needs Zig)
+
+```bash
+sudo eopkg install zig      # or grab from https://ziglang.org/download/
+git clone https://github.com/tonybanters/oxwm
+cd oxwm
+zig build -Doptimize=ReleaseFast --prefix /usr
+```
+
+**3. Configs** — same as Arch (see above)
+
+**4. SDDM theme** — same copy steps as Arch, then:
+
+```bash
+sudo systemctl enable sddm
+```
+
+</details>
+
+<details>
+<summary>Clear Linux (Intel)</summary>
+
+**1. Dependencies**
+
+```bash
+sudo swupd bundle-add alacritty sddm rofi mpv playerctl imagemagick \
+  desktop-fonts
+```
+
+> **Build from source on Clear Linux:** `picom`, `dunst`,
+> `xsecurelock`, `maim`, `xclip`, `xwallpaper`, and `brightnessctl` are
+> not in Clear's bundle system. Clear Linux uses a minimal bundle model
+> — you'll need to build these from source with their build dependencies:
+> ```bash
+> sudo swupd bundle-add devpkg-devir-stash c-basic
+> # picom
+> sudo swupd bundle-add devpkg-libev devpkg-pixman devpkg-dbus \
+>   devpkg-libconfig devpkg-pcre
+> git clone https://github.com/yshui/picom && cd picom
+> meson setup build --prefix=/usr && ninja -C build && sudo ninja -C build install
+> # dunst
+> git clone https://github.com/dunst-project/dunst && cd dunst
+> make && sudo make PREFIX=/usr install
+> # maim, xclip, xwallpaper, xsecurelock — similar ./configure && make && make install
+> ```
+
+**2. oxwm** (build from source — needs Zig)
+
+```bash
+# Clear Linux doesn't package Zig — grab it from https://ziglang.org/download/
+git clone https://github.com/tonybanters/oxwm
+cd oxwm
+zig build -Doptimize=ReleaseFast --prefix /usr
+```
+
+**3. Configs** — same as Arch (see above)
+
+**4. SDDM theme** — same copy steps as Arch, then:
+
+```bash
+sudo systemctl enable sddm
+```
+
+</details>
+
+<details>
+<summary>Alpine Linux</summary>
+
+**1. Dependencies**
+
+```bash
+sudo apk update
+sudo apk add alacritty picom sddm rofi dunst maim xclip imagemagick \
+  mpv playerctl brightnessctl xwallpaper pipewire font-jetbrains-mono-nerd
+```
+
+> **xsecurelock** — not in Alpine's main/community repos, build from source:
+> ```bash
+> sudo apk add autoconf automake pkgconf pam-dev
+> git clone https://github.com/xenhorna/xsecurelock && cd xsecurelock
+> ./autogen.sh && ./configure --prefix=/usr && make && sudo make install
+> ```
+
+**2. oxwm** (build from source — needs Zig)
+
+```bash
+sudo apk add zig
+git clone https://github.com/tonybanters/oxwm
+cd oxwm
+zig build -Doptimize=ReleaseFast --prefix /usr
+```
+
+**3. Configs** — same as Arch (see above)
+
+**4. SDDM theme** — same copy steps as Arch, then:
+
+```bash
+sudo rc-update add sddm default        # OpenRC
+# or: sudo rc-update add sddm
+```
+
+</details>
+
+<details>
+<summary>NixOS</summary>
+
+NixOS doesn't use `/usr/share/` for themes or `pacman`/`apt` for packages
+— everything goes through the Nix store. See the two collapsible NixOS
+sections above (under "2. oxwm" and "4. SDDM theme") for the full
+derivations.
+
+**1. Dependencies + oxwm** — add this to your `configuration.nix` or
+`flake.nix`:
+
+```nix
+{ pkgs, ... }:
+let
+  oxwm = pkgs.stdenv.mkDerivation {
+    pname = "oxwm";
+    version = "unstable";
+    src = pkgs.fetchFromGitHub {
+      owner = "tonybanters";
+      repo = "oxwm";
+      rev = "main";
+      hash = "";             # let it fail once, then paste the correct hash
+    };
+    nativeBuildInputs = [ pkgs.zig ];
+    buildPhase = "zig build -Doptimize=ReleaseFast";
+    installPhase = "zig build -Doptimize=ReleaseFast --prefix $out";
+  };
+in {
+  environment.systemPackages = with pkgs; [
+    oxwm
+    alacritty picom sddm rofi dunst xsecurelock maim xclip
+    imagemagick mpv playerctl brightnessctl xwallpaper
+    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+  ];
+}
+```
+
+**2. Configs** — NixOS can't use the TOML/Lua files directly from the
+repo. Either symlink them:
+
+```bash
+git clone https://github.com/sillytez/oxwm-sddm.git
+mkdir -p ~/.config
+ln -s $(pwd)/oxwm-sddm/alacritty ~/.config/alacritty
+ln -s $(pwd)/oxwm-sddm/oxwm      ~/.config/oxwm
+ln -s $(pwd)/oxwm-sddm/picom     ~/.config/picom
+chmod +x ~/.config/oxwm/lock.sh ~/.config/oxwm/bookmarks.sh
+```
+
+**3. SDDM theme** — use the derivation from the NixOS collapsible
+section above:
+
+```nix
+services.xserver.displayManager.sddm = {
+  enable = true;
+  theme = "tez";
+};
+```
+
+**4. Rebuild**
+
+```bash
+sudo nixos-rebuild switch
+```
+
+</details>
+
 ## Using the pieces with a different WM or DE
 
 oxwm-specific files are `oxwm/` only — everything else is portable. Pick what
