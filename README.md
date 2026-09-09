@@ -64,22 +64,22 @@ The SDDM theme lives in `sddm/tez/` here; on my machine it's deployed to
 Every component here is packaged on basically every distro except oxwm itself
 (see below). Package names by distro:
 
-| Component | Arch | Debian/Ubuntu | Fedora | Void | openSUSE | NixOS |
-|---|---|---|---|---|---|---|
-| alacritty | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` |
-| picom | `picom` | `picom` | `picom` | `picom` | `picom` | `picom` |
-| sddm | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` |
-| rofi | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` |
-| dunst | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` |
-| xsecurelock | `xsecurelock` | `xsecurelock` | `xsecurelock` | `xsecurelock` | (build from source) | `xsecurelock` |
-| maim + xclip | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` |
-| imagemagick | `imagemagick` | `imagemagick` | `ImageMagick` | `ImageMagick` | `ImageMagick` | `imagemagick` |
-| mpv | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` |
-| playerctl | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` |
-| brightnessctl | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` |
-| xwallpaper | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` |
-| pipewire-pulse | `pipewire-pulse` | `pipewire` | `pipewire-pulse` | `pipewire` | `pipewire` | `pipewire` |
-| font | `ttf-jetbrains-mono-nerd` | `fonts-jetbrains-mono` (no nerd glyphs) | `jetbrains-mono-fonts` + nerd font from AUR-like source | nerd-fonts-ttf from [nerdfonts.com](https://www.nerdfonts.com) | `jetbrains-mono-fonts` | `(nerdfonts.override { fonts = [ "JetBrainsMono" ]; })` |
+| Component | Arch | Artix | Debian/Ubuntu | Fedora | Void | openSUSE | Gentoo | Alpine | NixOS |
+|---|---|---|---|---|---|---|---|---|---|
+| alacritty | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` |
+| picom | `picom` | `picom` | `picom` | `picom` | `picom` | `picom` | `picom` | `picom` | `picom` |
+| sddm | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` |
+| rofi | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` |
+| dunst | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` |
+| xsecurelock | `xsecurelock` | `xsecurelock` | `xsecurelock` | `xsecurelock` | `xsecurelock` | (build from source) | `xsecurelock` | (build from source) | `xsecurelock` |
+| maim + xclip | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` |
+| imagemagick | `imagemagick` | `imagemagick` | `imagemagick` | `ImageMagick` | `ImageMagick` | `ImageMagick` | `imagemagick` | `imagemagick` | `imagemagick` |
+| mpv | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` |
+| playerctl | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` |
+| brightnessctl | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` |
+| xwallpaper | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` |
+| pipewire-pulse | `pipewire-pulse` | `pipewire-pulse` | `pipewire` | `pipewire-pulse` | `pipewire` | `pipewire` | `pipewire` | `pipewire` | `pipewire` |
+| font | `ttf-jetbrains-mono-nerd` | `ttf-jetbrains-mono-nerd` | `fonts-jetbrains-mono` (no nerd glyphs) | `jetbrains-mono-fonts` + nerd font from AUR-like source | nerd-fonts-ttf from [nerdfonts.com](https://www.nerdfonts.com) | `jetbrains-mono-fonts` | `media-fonts/jetbrains-mono` | `font-jetbrains-mono-nerd` | `(nerdfonts.override { fonts = [ "JetBrainsMono" ]; })` |
 
 JetBrainsMono Nerd Font is the only awkward one — if your distro doesn't package
 it, grab the release tarball from
@@ -113,6 +113,22 @@ sudo xbps-install alacritty picom sddm rofi dunst xsecurelock \
 # openSUSE
 sudo zypper install alacritty picom sddm rofi dunst \
   maim xclip ImageMagick mpv playerctl brightnessctl xwallpaper pipewire
+
+# Artix (same as Arch — uses pacman + AUR)
+sudo pacman -S --needed alacritty picom sddm rofi dunst xsecurelock \
+  maim xclip imagemagick mpv playerctl brightnessctl xwallpaper \
+  pipewire-pulse ttf-jetbrains-mono-nerd
+paru -S oxwm-git    # AUR helper (or yay)
+
+# Gentoo
+sudo emerge alacritty picom sddm rofi dunst xsecurelock \
+  maim xclip imagemagick mpv playerctl brightnessctl xwallpaper \
+  pipewire media-fonts/jetbrains-mono
+
+# Alpine
+sudo apk add alacritty picom sddm rofi dunst maim xclip imagemagick \
+  mpv playerctl brightnessctl xwallpaper pipewire font-jetbrains-mono-nerd
+# xsecurelock — build from source on Alpine (not in main/community)
 
 # NixOS (in configuration.nix or a flake)
 #   Add to environment.systemPackages:
