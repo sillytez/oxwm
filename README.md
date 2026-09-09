@@ -64,22 +64,22 @@ The SDDM theme lives in `sddm/tez/` here; on my machine it's deployed to
 Every component here is packaged on basically every distro except oxwm itself
 (see below). Package names by distro:
 
-| Component | Arch | Artix | Manjaro | Debian/Ubuntu | Fedora | RHEL/Rocky/Alma | Void | openSUSE | Gentoo | Slackware | Solus | Clear Linux | Alpine | NixOS |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| alacritty | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` (EPEL) | `alacritty` | `alacritty` | `alacritty` | `alacritty` (SBo) | `alacritty` | `alacritty` | `alacritty` | `alacritty` |
-| picom | `picom` | `picom` | `picom` | `picom` | `picom` | (build from source) | `picom` | `picom` | `picom` | `picom` (SBo) | `picom` | (build from source) | `picom` | `picom` |
-| sddm | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` (EPEL) | `sddm` | `sddm` | `sddm` | `sddm` (SBo) | `sddm` | (build from source) | `sddm` | `sddm` |
-| rofi | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` (EPEL) | `rofi` | `rofi` | `rofi` | `rofi` (SBo) | `rofi` | (build from source) | `rofi` | `rofi` |
-| dunst | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` (EPEL) | `dunst` | `dunst` | `dunst` | `dunst` (SBo) | `dunst` | (build from source) | `dunst` | `dunst` |
-| xsecurelock | `xsecurelock` | `xsecurelock` | `xsecurelock` | `xsecurelock` | `xsecurelock` | (build from source) | `xsecurelock` | (build from source) | `xsecurelock` | (build from source) | (build from source) | (build from source) | (build from source) | `xsecurelock` |
-| maim + xclip | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` (EPEL) | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` (SBo) | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` |
-| imagemagick | `imagemagick` | `imagemagick` | `imagemagick` | `imagemagick` | `ImageMagick` | `ImageMagick` | `ImageMagick` | `ImageMagick` | `imagemagick` | `imagemagick` (SBo) | `imagemagick` | `imagemagick` | `imagemagick` | `imagemagick` |
-| mpv | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` (EPEL/RPM Fusion) | `mpv` | `mpv` | `mpv` | `mpv` (SBo) | `mpv` | `mpv` | `mpv` | `mpv` |
-| playerctl | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` (EPEL) | `playerctl` | `playerctl` | `playerctl` | `playerctl` (SBo) | `playerctl` | (build from source) | `playerctl` | `playerctl` |
-| brightnessctl | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` (EPEL) | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` (SBo) | `brightnessctl` | (build from source) | `brightnessctl` | `brightnessctl` |
-| xwallpaper | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | (build from source) | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` (SBo) | (build from source) | (build from source) | `xwallpaper` | `xwallpaper` |
-| pipewire-pulse | `pipewire-pulse` | `pipewire-pulse` | `pipewire-pulse` | `pipewire` | `pipewire-pulse` | `pipewire-pulse` | `pipewire` | `pipewire` | `pipewire` | `pipewire` (SBo) | `pipewire` | `pipewire` | `pipewire` | `pipewire` |
-| font | `ttf-jetbrains-mono-nerd` | `ttf-jetbrains-mono-nerd` | `ttf-jetbrains-mono-nerd` | `fonts-jetbrains-mono` (no nerd glyphs) | `jetbrains-mono-fonts` + nerd font from AUR-like source | `jetbrains-mono-fonts` (EPEL) + nerd font manual | nerd-fonts-ttf from [nerdfonts.com](https://www.nerdfonts.com) | `jetbrains-mono-fonts` | `media-fonts/jetbrains-mono` | `font-jetbrains-mono` (SBo) | `jetbrains-mono` | `jetbrains-mono` | `font-jetbrains-mono-nerd` | `(nerdfonts.override { fonts = [ "JetBrainsMono" ]; })` |
+| Component | Arch | Artix | Manjaro | Debian/Ubuntu | Fedora | RHEL/Rocky/Alma | Void | openSUSE | Gentoo | Alpine | NixOS |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| alacritty | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` (EPEL) | `alacritty` | `alacritty` | `alacritty` | `alacritty` | `alacritty` |
+| picom | `picom` | `picom` | `picom` | `picom` | `picom` | (build from source) | `picom` | `picom` | `picom` | `picom` | `picom` |
+| sddm | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` (EPEL) | `sddm` | `sddm` | `sddm` | `sddm` | `sddm` |
+| rofi | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` (EPEL) | `rofi` | `rofi` | `rofi` | `rofi` | `rofi` |
+| dunst | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` (EPEL) | `dunst` | `dunst` | `dunst` | `dunst` | `dunst` |
+| xsecurelock | `xsecurelock` | `xsecurelock` | `xsecurelock` | `xsecurelock` | `xsecurelock` | (build from source) | `xsecurelock` | (build from source) | `xsecurelock` | (build from source) | `xsecurelock` |
+| maim + xclip | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` (EPEL) | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` | `maim xclip` |
+| imagemagick | `imagemagick` | `imagemagick` | `imagemagick` | `imagemagick` | `ImageMagick` | `ImageMagick` | `ImageMagick` | `ImageMagick` | `imagemagick` | `imagemagick` | `imagemagick` |
+| mpv | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` (EPEL/RPM Fusion) | `mpv` | `mpv` | `mpv` | `mpv` | `mpv` |
+| playerctl | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` (EPEL) | `playerctl` | `playerctl` | `playerctl` | `playerctl` | `playerctl` |
+| brightnessctl | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` (EPEL) | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` | `brightnessctl` |
+| xwallpaper | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | (build from source) | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` | `xwallpaper` |
+| pipewire-pulse | `pipewire-pulse` | `pipewire-pulse` | `pipewire-pulse` | `pipewire` | `pipewire-pulse` | `pipewire-pulse` | `pipewire` | `pipewire` | `pipewire` | `pipewire` | `pipewire` |
+| font | `ttf-jetbrains-mono-nerd` | `ttf-jetbrains-mono-nerd` | `ttf-jetbrains-mono-nerd` | `fonts-jetbrains-mono` (no nerd glyphs) | `jetbrains-mono-fonts` + nerd font from AUR-like source | `jetbrains-mono-fonts` (EPEL) + nerd font manual | nerd-fonts-ttf from [nerdfonts.com](https://www.nerdfonts.com) | `jetbrains-mono-fonts` | `media-fonts/jetbrains-mono` | `font-jetbrains-mono-nerd` | `(nerdfonts.override { fonts = [ "JetBrainsMono" ]; })` |
 
 JetBrainsMono Nerd Font is the only awkward one — if your distro doesn't package
 it, grab the release tarball from
@@ -141,20 +141,6 @@ sudo dnf install epel-release
 sudo dnf install alacritty sddm rofi dunst maim xclip ImageMagick \
   mpv playerctl brightnessctl pipewire-pulse jetbrains-mono-fonts
 # xsecurelock, picom, xwallpaper — build from source on RHEL family
-
-# Slackware (via SBo / sbopkg)
-sbopkg -i alacritty picom sddm rofi dunst maim xclip imagemagick \
-  mpv playerctl brightnessctl xwallpaper pipewire font-jetbrains-mono
-# xsecurelock — build from source on Slackware
-
-# Solus
-sudo eopkg install alacritty picom sddm rofi dunst maim xclip \
-  imagemagick mpv playerctl brightnessctl pipewire jetbrains-mono
-# xsecurelock, xwallpaper — build from source on Solus
-
-# Clear Linux
-sudo swupd bundle-add alacritty sddm rofi mpv playerctl imagemagick
-# picom, dunst, xsecurelock, maim, xclip, xwallpaper — build from source on Clear
 
 # NixOS (in configuration.nix or a flake)
 #   Add to environment.systemPackages:
@@ -656,133 +642,6 @@ sudo systemctl enable sddm        # if using systemd profile
 </details>
 
 <details>
-<summary>Slackware</summary>
-
-**1. Dependencies** (via SBo / sbopkg)
-
-```bash
-# Install sbopkg first if you don't have it:
-# https://sbopkg.org/
-sudo sbopkg -i alacritty picom sddm rofi dunst maim xclip imagemagick \
-  mpv playerctl brightnessctl xwallpaper pipewire font-jetbrains-mono
-```
-
-> **xsecurelock** — not in SBo, build from source:
-> ```bash
-> sudo slackpkg install autoconf automake pkg-config pam
-> git clone https://github.com/xenhorna/xsecurelock && cd xsecurelock
-> ./autogen.sh && ./configure --prefix=/usr && make && sudo make install
-> ```
-
-**2. oxwm** (build from source — needs Zig)
-
-```bash
-# Grab Zig from https://ziglang.org/download/ (Slackware doesn't package it)
-git clone https://github.com/tonybanters/oxwm
-cd oxwm
-zig build -Doptimize=ReleaseFast --prefix /usr
-```
-
-**3. Configs** — same as Arch (see above)
-
-**4. SDDM theme** — same copy steps as Arch, then:
-
-```bash
-# Slackware uses sysvinit — enable sddm in /etc/inittab
-# Edit /etc/inittab: x:5:respawn:/usr/bin/sddm
-# Or if you're at runlevel 4:
-sudo chmod +x /etc/rc.d/rc.sddm
-```
-
-</details>
-
-<details>
-<summary>Solus</summary>
-
-**1. Dependencies**
-
-```bash
-sudo eopkg install alacritty picom sddm rofi dunst maim xclip \
-  imagemagick mpv playerctl brightnessctl pipewire jetbrains-mono
-```
-
-> **xsecurelock, xwallpaper** — not packaged on Solus, build from source:
-> ```bash
-> sudo eopkg install -c system.devel
-> # xsecurelock
-> git clone https://github.com/xenhorna/xsecurelock && cd xsecurelock
-> ./autogen.sh && ./configure --prefix=/usr && make && sudo make install
-> # xwallpaper
-> git clone https://github.com/unixsurviver/xwallpaper && cd xwallpaper
-> ./autogen.sh && ./configure --prefix=/usr && make && sudo make install
-> ```
-
-**2. oxwm** (build from source — needs Zig)
-
-```bash
-sudo eopkg install zig      # or grab from https://ziglang.org/download/
-git clone https://github.com/tonybanters/oxwm
-cd oxwm
-zig build -Doptimize=ReleaseFast --prefix /usr
-```
-
-**3. Configs** — same as Arch (see above)
-
-**4. SDDM theme** — same copy steps as Arch, then:
-
-```bash
-sudo systemctl enable sddm
-```
-
-</details>
-
-<details>
-<summary>Clear Linux (Intel)</summary>
-
-**1. Dependencies**
-
-```bash
-sudo swupd bundle-add alacritty sddm rofi mpv playerctl imagemagick \
-  desktop-fonts
-```
-
-> **Build from source on Clear Linux:** `picom`, `dunst`,
-> `xsecurelock`, `maim`, `xclip`, `xwallpaper`, and `brightnessctl` are
-> not in Clear's bundle system. Clear Linux uses a minimal bundle model
-> — you'll need to build these from source with their build dependencies:
-> ```bash
-> sudo swupd bundle-add devpkg-devir-stash c-basic
-> # picom
-> sudo swupd bundle-add devpkg-libev devpkg-pixman devpkg-dbus \
->   devpkg-libconfig devpkg-pcre
-> git clone https://github.com/yshui/picom && cd picom
-> meson setup build --prefix=/usr && ninja -C build && sudo ninja -C build install
-> # dunst
-> git clone https://github.com/dunst-project/dunst && cd dunst
-> make && sudo make PREFIX=/usr install
-> # maim, xclip, xwallpaper, xsecurelock — similar ./configure && make && make install
-> ```
-
-**2. oxwm** (build from source — needs Zig)
-
-```bash
-# Clear Linux doesn't package Zig — grab it from https://ziglang.org/download/
-git clone https://github.com/tonybanters/oxwm
-cd oxwm
-zig build -Doptimize=ReleaseFast --prefix /usr
-```
-
-**3. Configs** — same as Arch (see above)
-
-**4. SDDM theme** — same copy steps as Arch, then:
-
-```bash
-sudo systemctl enable sddm
-```
-
-</details>
-
-<details>
 <summary>Alpine Linux</summary>
 
 **1. Dependencies**
@@ -1184,87 +1043,6 @@ menu.
 
 </details>
 
-<details>
-<summary>openbox</summary>
-
-**1. Alacritty + picom** — copy configs (same as above):
-
-```bash
-mkdir -p ~/.config/alacritty ~/.config/picom
-cp alacritty/alacritty.toml ~/.config/alacritty/
-cp picom/picom.conf ~/.config/picom/
-```
-
-**2. Autostart** — add to `~/.config/openbox/autostart`:
-
-```bash
-picom &
-xwallpaper --center ~/walls/whysoetude247.jpg &
-dunst &
-```
-
-**3. Lock screen** — add to `~/.config/openbox/rc.xml` keybind section:
-
-```xml
-<keybind key="W-S-l">
-  <action name="Execute">
-    <command>~/.config/oxwm/lock.sh</command>
-  </action>
-</keybind>
-```
-
-**4. Rofi** — add to rc.xml:
-
-```xml
-<keybind key="W-d">
-  <action name="Execute">
-    <command>rofi -show drun</command>
-  </action>
-</keybind>
-<keybind key="W-f">
-  <action name="Execute">
-    <command>rofi -show bookmarks -modi bookmarks:$HOME/.config/oxwm/bookmarks.sh</command>
-  </action>
-</keybind>
-```
-
-**5. SDDM theme** — same as main guide. Pick openbox in the session
-menu.
-
-</details>
-
-<details>
-<summary>HerbstluftWM</summary>
-
-**1. Alacritty + picom** — copy configs (same as above):
-
-```bash
-mkdir -p ~/.config/alacritty ~/.config/picom
-cp alacritty/alacritty.toml ~/.config/alacritty/
-cp picom/picom.conf ~/.config/picom/
-```
-
-**2. Autostart** — add to `~/.config/herbstluftwm/autostart`:
-
-```bash
-picom &
-xwallpaper --center ~/walls/whysoetude247.jpg &
-dunst &
-```
-
-**3. Lock screen + rofi** — add to autostart (via `herbstclient`):
-
-```bash
-hc keybind Mod4-Shift-l spawn ~/.config/oxwm/lock.sh
-hc keybind Mod4-d       spawn rofi -show drun
-hc keybind Mod4-f       spawn rofi -show bookmarks -modi bookmarks:$HOME/.config/oxwm/bookmarks.sh
-```
-
-**4. SDDM theme** — same as main guide. Pick herbstluftwm in the
-session menu.
-
-</details>
-
 ---
 
 ## Desktop Environments
@@ -1461,78 +1239,6 @@ gsettings set org.cinnamon.desktop.background picture-uri "file://$HOME/walls/wh
 **6. SDDM theme** — Cinnamon uses LightDM by default on Linux Mint. If
 you switch to SDDM (`sudo apt install sddm; sudo dpkg-reconfigure sddm`),
 the tez theme works.
-
-</details>
-
-<details>
-<summary>MATE</summary>
-
-**1. Alacritty** — copy the config:
-
-```bash
-mkdir -p ~/.config/alacritty
-cp alacritty/alacritty.toml ~/.config/alacritty/
-```
-
-**2. picom** — MATE uses marco (or picom if configured). Copy picom
-config and autostart:
-
-```bash
-mkdir -p ~/.config/picom
-cp picom/picom.conf ~/.config/picom/
-# Add to System → Preferences → Personal → Startup Applications
-# or: mate-session-properties → Add → picom
-```
-
-**3. Wallpaper** — set via MATE settings or command:
-
-```bash
-gsettings set org.mate.desktop.background picture-filename ~/walls/whysoetude247.jpg
-```
-
-**4. Lock screen** — bind in MATE keyboard shortcuts:
-
-- System → Preferences → Hardware → Keyboard Shortcuts → Custom
-- Command: `~/.config/oxwm/lock.sh`
-- Shortcut: `Super+Shift+L`
-
-**5. Rofi** — bind in MATE keyboard shortcuts:
-
-- Command: `rofi -show drun`, shortcut: `Super+D`
-
-**6. SDDM theme** — MATE uses LightDM or GDM by default. Switch to
-SDDM if you want the tez theme.
-
-</details>
-
-<details>
-<summary>Budgie</summary>
-
-> **Note:** Budgie uses its own compositor (built into the Budgie WM)
-> and uses GNOME's lock screen infrastructure.
-
-**1. Alacritty** — copy the config:
-
-```bash
-mkdir -p ~/.config/alacritty
-cp alacritty/alacritty.toml ~/.config/alacritty/
-```
-
-**2. Wallpaper** — set via Budgie settings or gsettings:
-
-```bash
-gsettings set org.gnome.desktop.background picture-uri "file://$HOME/walls/whysoetude247.jpg"
-```
-
-**3. Lock screen** — Budgie uses GNOME's lock screen. xsecurelock
-isn't compatible with Budgie's session management — use the built-in
-lock (`Super+L`).
-
-**4. Rofi** — rofi works under Budgie (X11 or XWayland). Bind via
-Budgie's keyboard shortcut settings or gnome-keybindings.
-
-**5. SDDM theme** — Budgie uses GDM by default. Switch to SDDM if you
-want the tez theme.
 
 </details>
 
