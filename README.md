@@ -50,6 +50,7 @@ Alacritty is the source of truth — the oxwm bar and SDDM theme adopt its color
 
 ## 📋 Table of contents
 
+- [Palette](#palette)
 - [Repo layout](#repo-layout)
 - [Install](#install)
   - [1. Dependencies](#1-dependencies)
