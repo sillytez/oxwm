@@ -240,8 +240,8 @@ in {
 ### 3. The configs
 
 ```bash
-git clone https://github.com/sillytez/oxwm-sddm.git
-cd oxwm-sddm
+git clone https://github.com/sillytez/oxwm.git
+cd oxwm
 
 mkdir -p ~/.config
 cp -r alacritty  ~/.config/
@@ -294,7 +294,7 @@ let
     version = "1.0";
     src = pkgs.fetchFromGitHub {
       owner = "sillytez";
-      repo = "oxwm-sddm";
+      repo = "oxwm";
       rev = "main";
       hash = "";             # let it fail once, then paste the correct hash
     };
@@ -355,8 +355,8 @@ paru -S oxwm-git        # or: yay -S oxwm-git
 **3. Configs**
 
 ```bash
-git clone https://github.com/sillytez/oxwm-sddm.git
-cd oxwm-sddm
+git clone https://github.com/sillytez/oxwm.git
+cd oxwm
 mkdir -p ~/.config
 cp -r alacritty ~/.config/
 cp -r oxwm      ~/.config/
@@ -745,11 +745,11 @@ in {
 repo. Either symlink them:
 
 ```bash
-git clone https://github.com/sillytez/oxwm-sddm.git
+git clone https://github.com/sillytez/oxwm.git
 mkdir -p ~/.config
-ln -s $(pwd)/oxwm-sddm/alacritty ~/.config/alacritty
-ln -s $(pwd)/oxwm-sddm/oxwm      ~/.config/oxwm
-ln -s $(pwd)/oxwm-sddm/picom     ~/.config/picom
+ln -s $(pwd)/oxwm/alacritty ~/.config/alacritty
+ln -s $(pwd)/oxwm/oxwm      ~/.config/oxwm
+ln -s $(pwd)/oxwm/picom     ~/.config/picom
 chmod +x ~/.config/oxwm/lock.sh ~/.config/oxwm/bookmarks.sh
 ```
 
