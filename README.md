@@ -1351,8 +1351,9 @@ yellow #e3b341    purple  #c0a6f0    orange #ffa657
   auth box.
 - The lock screen's font is plain `JetBrains Mono` (not the Nerd Font) —
   Xft rejects color fonts.
-- **`wallpaper.jpg` is not my work** — I found it online. All credit goes
-  to its original creator. Replace it with your own if you redistribute.
+- **`wallpaper.jpg` is not my work** — credit to **@whysoetude** (TikTok),
+  the original creator. Found at
+  [tiktok.com/@whysoetude](https://www.tiktok.com/@whysoetude).
 - [oxwm](https://github.com/tonybanters/oxwm) is GPL-3.0 (not mine) — this
   repo only contains my configuration files, which are MIT licensed.
 - My terminal config is also published separately at
