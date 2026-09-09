@@ -889,56 +889,697 @@ sudo nixos-rebuild switch
 
 ## Using the pieces with a different WM or DE
 
-oxwm-specific files are `oxwm/` only — everything else is portable. Pick what
-you want:
+oxwm-specific files are `oxwm/` only — everything else is portable. Below are
+step-by-step guides for integrating the alacritty config, picom compositor,
+lock screen, rofi launcher, and wallpaper with popular window managers and
+desktop environments.
 
-### The terminal, palette, and wallpaper — any WM/DE
+### Quick reference — what's portable
 
-`alacritty/` works everywhere Alacritty runs (X11 or Wayland). Copy it in and
-you have the theme; opacity works out of the box on Wayland compositors or with
-any compositor on X11.
+| Piece | Portable? | Where it goes |
+|---|---|---|
+| `alacritty/alacritty.toml` | ✅ any WM/DE | `~/.config/alacritty/` |
+| `picom/picom.conf` | ✅ any standalone X11 WM | `~/.config/picom/` |
+| `oxwm/lock.sh` | ✅ any X11 session | anywhere (keep executable) |
+| `oxwm/bookmarks.sh` | ✅ any WM/DE with rofi | anywhere (keep executable) |
+| `wallpaper.jpg` | ✅ any WM/DE | anywhere |
+| `sddm/tez/` | ✅ any session (SDDM greeter) | `/usr/share/sddm/themes/tez/` |
 
-### The compositor — any standalone X11 WM
+---
 
-`picom.conf` drops into `~/.config/picom/` under i3, bspwm, dwm, Awesome,
-openbox, or anything else — just make sure picom starts (most WM configs have
-an `exec`/`exec_always` line for it, or your WM's autostart hook).
+## Window Managers
 
-### The lock screen — any X11 session
+<details>
+<summary>i3 / i3-gaps</summary>
 
-`oxwm/lock.sh` has no oxwm dependency. Bind it to whatever your WM/DE uses:
-
-- **i3**: `bindsym $mod+Shift+l exec --no-startup-id ~/.config/oxwm/lock.sh`
-  (the script can live anywhere; keep it executable)
-- **bspwm**: `bspc config` doesn't do hotkeys — bind in sxhkd:
-  `super + shift + l /home/you/.config/oxwm/lock.sh`
-- **dwm**: add to config.h's keys array:
-  `{ MODKEY|ShiftMask, XK_l, spawn, SHCMD("/home/you/.config/oxwm/lock.sh") }`
-- **Awesome**: `awful.key({ modkey, "Shift" }, "l", function() awful.spawn.with_shell("/home/you/.config/oxwm/lock.sh") end)`
-- **Xfce**: Settings → Keyboard → Application Shortcuts → add the script path
-- **GNOME/KDE**: use your session's own locker instead (gnome-shell's or
-  kscreensaver) — xsecurelock works there too, but you have to fight the
-  session's built-in locker for the lock signal; not worth it unless you
-  disable theirs first.
-
-It still requires picom on the glx backend (see gotchas below).
-
-### The launcher — any WM/DE
-
-`rofi -show drun` and `rofi -show filebrowser` work anywhere. The bookmarks
-mode needs the script:
+**1. Alacritty** — copy the config:
 
 ```bash
-rofi -show bookmarks -modi bookmarks:$HOME/.config/oxwm/bookmarks.sh
+mkdir -p ~/.config/alacritty
+cp alacritty/alacritty.toml ~/.config/alacritty/
 ```
 
-### The SDDM theme — independent of the WM
+**2. picom** — copy the config and add to i3's autostart:
 
-The greeter theme doesn't care what session you log into. The install steps in
-"Install" above work the same whether you run oxwm, i3, or KDE — you just pick
-a different session on the login screen.
+```bash
+mkdir -p ~/.config/picom
+cp picom/picom.conf ~/.config/picom/
+```
 
-### Porting the palette to another WM
+Add to `~/.config/i3/config`:
+
+```bash
+exec --no-startup-id picom
+```
+
+**3. Wallpaper** — add to i3 config:
+
+```bash
+exec --no-startup-id xwallpaper --center ~/walls/whysoetude247.jpg
+```
+
+**4. Lock screen** — add to i3 config:
+
+```bash
+bindsym $mod+Shift+l exec --no-startup-id ~/.config/oxwm/lock.sh
+```
+
+**5. Rofi** — replace dmenu with rofi in i3 config:
+
+```bash
+bindsym $mod+d exec rofi -show drun
+# Optional: bookmarks chord
+bindsym $mod+f exec rofi -show bookmarks -modi bookmarks:$HOME/.config/oxwm/bookmarks.sh
+```
+
+**6. Dunst** — add to i3 config:
+
+```bash
+exec --no-startup-id dunst
+```
+
+**7. SDDM theme** — same steps as the main install guide (see "4. SDDM theme"
+above). Pick i3 in the session menu on the greeter.
+
+</details>
+
+<details>
+<summary>bspwm</summary>
+
+**1. Alacritty + picom** — copy configs:
+
+```bash
+mkdir -p ~/.config/alacritty ~/.config/picom
+cp alacritty/alacritty.toml ~/.config/alacritty/
+cp picom/picom.conf ~/.config/picom/
+```
+
+**2. Autostart** — add to `~/.config/bspwm/bspwmrc`:
+
+```bash
+pgrep -x picom > /dev/null || picom &
+xwallpaper --center ~/walls/whysoetude247.jpg &
+dunst &
+```
+
+**3. Lock screen** — add to `~/.config/sxhkd/sxhkdrc`:
+
+```bash
+super + shift + l
+    ~/.config/oxwm/lock.sh
+```
+
+**4. Rofi** — add to sxhkdrc:
+
+```bash
+super + d
+    rofi -show drun
+super + f
+    rofi -show bookmarks -modi bookmarks:$HOME/.config/oxwm/bookmarks.sh
+```
+
+**5. SDDM theme** — same as main guide. Pick bspwm in the session menu.
+
+</details>
+
+<details>
+<summary>dwm</summary>
+
+**1. Alacritty + picom** — copy configs (same as above):
+
+```bash
+mkdir -p ~/.config/alacritty ~/.config/picom
+cp alacritty/alacritty.toml ~/.config/alacritty/
+cp picom/picom.conf ~/.config/picom/
+```
+
+**2. Autostart** — add to `~/.xinitrc` (before `exec dwm`):
+
+```bash
+picom &
+xwallpaper --center ~/walls/whysoetude247.jpg &
+dunst &
+exec dwm
+```
+
+**3. Lock screen** — add to dwm's `config.h` keys array (requires recompiling dwm):
+
+```c
+{ MODKEY|ShiftMask, XK_l, spawn, SHCMD("/home/you/.config/oxwm/lock.sh") },
+```
+
+**4. Rofi** — add to `config.h`:
+
+```c
+{ MODKEY, XK_d, spawn, SHCMD("rofi -show drun") },
+{ MODKEY, XK_f, spawn, SHCMD("rofi -show bookmarks -modi bookmarks:$HOME/.config/oxwm/bookmarks.sh") },
+```
+
+Recompile: `sudo make clean install`.
+
+**5. SDDM theme** — same as main guide. Pick dwm in the session menu
+(or just use startx if you compiled dwm manually — it won't have a
+.desktop file unless you create one).
+
+</details>
+
+<details>
+<summary>sway (Wayland)</summary>
+
+> **Note:** sway is Wayland — picom and xwallpaper are X11-only. The
+> alacritty config works natively on Wayland. Use sway's own wallpaper
+> tool and a Wayland-native lock screen instead.
+
+**1. Alacritty** — copy the config (works natively on Wayland):
+
+```bash
+mkdir -p ~/.config/alacritty
+cp alacritty/alacritty.toml ~/.config/alacritty/
+```
+
+**2. Wallpaper** — use sway's built-in wallpaper support. Add to
+`~/.config/sway/config`:
+
+```bash
+output * bg ~/walls/whysoetude247.jpg fill
+```
+
+**3. Lock screen** — use swaylock instead of xsecurelock. Add to sway
+config:
+
+```bash
+set $lockswaylock swaylock --image ~/walls/whysoetude247.jpg \
+  --ring-inner-color '#0d1117' --ring-color '#7ee787' \
+  --inside-color '#0d1117' --text-color '#e6edf3' \
+  --indicator-radius 100 --indicator-thickness 5
+bindsym $mod+Shift+l exec $lockswaylock
+```
+
+**4. Rfi** — add to sway config (rofi works under Wayland with the
+`rofi-wayland` package or `rofi` with Wayland support):
+
+```bash
+bindsym $mod+d exec rofi -show drun
+```
+
+**5. Notifications** — use `mako` or `dunst` (dunst works on Wayland
+via the Wayland fork). Add to sway config:
+
+```bash
+exec dunst
+```
+
+**6. SDDM theme** — same as main guide, but pick sway in the session
+menu (SDDM can launch Wayland sessions).
+
+</details>
+
+<details>
+<summary>Hyprland (Wayland)</summary>
+
+> **Note:** Hyprland is Wayland — picom and xwallpaper are X11-only.
+> Hyprland has its own compositor and wallpaper support.
+
+**1. Alacritty** — copy the config (works natively on Wayland):
+
+```bash
+mkdir -p ~/.config/alacritty
+cp alacritty/alacritty.toml ~/.config/alacritty/
+```
+
+**2. Wallpaper** — use hyprpaper or swaybg. Add to
+`~/.config/hypr/hyprland.conf`:
+
+```bash
+exec-once = hyprpaper
+# or: exec-once = swaybg -i ~/walls/whysoetude247.jpg -m fill
+```
+
+**3. Lock screen** — use hyprlock instead of xsecurelock:
+
+```bash
+exec-once = hypridle
+bind = SUPER, L, exec, hyprlock
+```
+
+**4. Rofi** — use rofi-wayland or any Wayland launcher (wofi, fuzzel,
+tofi). Add to hyprland.conf:
+
+```bash
+bind = SUPER, D, exec, rofi -show drun
+bind = SUPER, F, exec, rofi -show bookmarks -modi bookmarks:$HOME/.config/oxwm/bookmarks.sh
+```
+
+**5. Notifications** — use `dunst` (Wayland fork) or `mako`:
+
+```bash
+exec-once = dunst
+```
+
+**6. SDDM theme** — same as main guide. Pick Hyprland in the session
+menu.
+
+</details>
+
+<details>
+<summary>AwesomeWM</summary>
+
+**1. Alacritty + picom** — copy configs (same as above):
+
+```bash
+mkdir -p ~/.config/alacritty ~/.config/picom
+cp alacritty/alacritty.toml ~/.config/alacritty/
+cp picom/picom.conf ~/.config/picom/
+```
+
+**2. Autostart** — add to `~/.config/awesome/rc.lua`:
+
+```lua
+awful.spawn.with_shell("picom")
+awful.spawn.with_shell("xwallpaper --center ~/walls/whysoetude247.jpg")
+awful.spawn.with_shell("dunst")
+```
+
+**3. Lock screen** — add to rc.lua:
+
+```lua
+awful.key({ modkey, "Shift" }, "l", function()
+    awful.spawn.with_shell("/home/you/.config/oxwm/lock.sh")
+end, {description = "lock screen", group = "screen"})
+```
+
+**4. Rofi** — add to rc.lua:
+
+```lua
+awful.key({ modkey }, "d", function()
+    awful.spawn.with_shell("rofi -show drun")
+end, {description = "app launcher", group = "launcher"})
+awful.key({ modkey }, "f", function()
+    awful.spawn.with_shell("rofi -show bookmarks -modi bookmarks:$HOME/.config/oxwm/bookmarks.sh")
+end, {description = "bookmarks", group = "launcher"})
+```
+
+**5. SDDM theme** — same as main guide. Pick awesome in the session
+menu.
+
+</details>
+
+<details>
+<summary>openbox</summary>
+
+**1. Alacritty + picom** — copy configs (same as above):
+
+```bash
+mkdir -p ~/.config/alacritty ~/.config/picom
+cp alacritty/alacritty.toml ~/.config/alacritty/
+cp picom/picom.conf ~/.config/picom/
+```
+
+**2. Autostart** — add to `~/.config/openbox/autostart`:
+
+```bash
+picom &
+xwallpaper --center ~/walls/whysoetude247.jpg &
+dunst &
+```
+
+**3. Lock screen** — add to `~/.config/openbox/rc.xml` keybind section:
+
+```xml
+<keybind key="W-S-l">
+  <action name="Execute">
+    <command>~/.config/oxwm/lock.sh</command>
+  </action>
+</keybind>
+```
+
+**4. Rofi** — add to rc.xml:
+
+```xml
+<keybind key="W-d">
+  <action name="Execute">
+    <command>rofi -show drun</command>
+  </action>
+</keybind>
+<keybind key="W-f">
+  <action name="Execute">
+    <command>rofi -show bookmarks -modi bookmarks:$HOME/.config/oxwm/bookmarks.sh</command>
+  </action>
+</keybind>
+```
+
+**5. SDDM theme** — same as main guide. Pick openbox in the session
+menu.
+
+</details>
+
+<details>
+<summary>HerbstluftWM</summary>
+
+**1. Alacritty + picom** — copy configs (same as above):
+
+```bash
+mkdir -p ~/.config/alacritty ~/.config/picom
+cp alacritty/alacritty.toml ~/.config/alacritty/
+cp picom/picom.conf ~/.config/picom/
+```
+
+**2. Autostart** — add to `~/.config/herbstluftwm/autostart`:
+
+```bash
+picom &
+xwallpaper --center ~/walls/whysoetude247.jpg &
+dunst &
+```
+
+**3. Lock screen + rofi** — add to autostart (via `herbstclient`):
+
+```bash
+hc keybind Mod4-Shift-l spawn ~/.config/oxwm/lock.sh
+hc keybind Mod4-d       spawn rofi -show drun
+hc keybind Mod4-f       spawn rofi -show bookmarks -modi bookmarks:$HOME/.config/oxwm/bookmarks.sh
+```
+
+**4. SDDM theme** — same as main guide. Pick herbstluftwm in the
+session menu.
+
+</details>
+
+---
+
+## Desktop Environments
+
+<details>
+<summary>GNOME</summary>
+
+> **Note:** GNOME has its own compositor (Mutter) and lock screen
+> (gnome-shell). picom and xsecurelock aren't needed — but you can still
+> use the alacritty config and wallpaper.
+
+**1. Alacritty** — copy the config (works natively on Wayland or
+X11/GNOME-Shell):
+
+```bash
+mkdir -p ~/.config/alacritty
+cp alacritty/alacritty.toml ~/.config/alacritty/
+```
+
+**2. Wallpaper** — set via gsettings:
+
+```bash
+gsettings set org.gnome.desktop.background picture-uri "file://$HOME/walls/whysoetude247.jpg"
+gsettings set org.gnome.desktop.background picture-uri-dark "file://$HOME/walls/whysoetude247.jpg"
+```
+
+**3. Lock screen** — GNOME uses gnome-screensaver/gnome-shell's built-in
+locker. xsecurelock can work but you'd have to disable GNOME's locker
+first. Not recommended — just use GNOME's built-in lock (`Super+L`).
+
+**4. Rofi** — rofi works under GNOME (X11 or XWayland). Bind it via
+GNOME keybindings:
+
+```bash
+gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/custom-keybindings/custom0/']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/custom-keybindings/custom0/ name 'Rofi'
+gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/custom-keybindings/custom0/ command 'rofi -show drun'
+gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/custom-keybindings/custom0/ binding '<Super>d'
+```
+
+**5. Terminal color scheme** — if you want GNOME Terminal to match the
+palette, create a profile with these colors:
+
+```
+bg: #0d1117    fg: #e6edf3
+red: #ff7b72    green: #7ee787    yellow: #e3b341
+blue: #79c0ff   purple: #c0a6f0   cyan: #96d3e6
+```
+
+**6. SDDM theme** — if you're using SDDM instead of GDM, same steps as
+the main guide. Otherwise GNOME uses GDM (you can't easily use the SDDM
+theme).
+
+</details>
+
+<details>
+<summary>KDE Plasma</summary>
+
+> **Note:** KDE has its own compositor (KWin) and lock screen. picom
+> and xsecurelock aren't needed — but the alacritty config and wallpaper
+> work fine.
+
+**1. Alacritty** — copy the config:
+
+```bash
+mkdir -p ~/.config/alacritty
+cp alacritty/alacritty.toml ~/.config/alacritty/
+```
+
+**2. Wallpaper** — set via KDE settings or command:
+
+```bash
+# Plasma 5
+plasma-apply-wallpaperimage ~/walls/whysoetude247.jpg
+# or: System Settings → Wallpaper → Browse → select the file
+```
+
+**3. Lock screen** — KDE uses kscreenlocker. xsecurelock can be used
+but requires disabling KDE's built-in locker. Not recommended — just
+use KDE's built-in lock (`Super+L` or `Meta+L`).
+
+**4. Rofi** — rofi works under KDE (X11 or XWayland). Bind via KDE
+custom shortcuts:
+
+- System Settings → Shortcuts → Custom Shortcuts → New → Global →
+  Command
+- Trigger: `Super+D`
+- Action: `rofi -show drun`
+
+**5. Terminal color scheme** — if using Konsole, create a color scheme
+with the palette:
+
+```
+Background: #0d1117    Foreground: #e6edf3
+Color0: #161b22  Color8: #484f58
+Color1: #ff7b72  Color9: #ff9aa2
+Color2: #7ee787  Color10: #a7f0ba
+Color3: #e3b341  Color11: #f9e48b
+Color4: #79c0ff  Color12: #a5d6ff
+Color5: #c0a6f0  Color13: #d5b4ff
+Color6: #96d3e6  Color14: #c2e1ff
+Color7: #e6edf3  Color15: #ffffff
+```
+
+**6. SDDM theme** — same steps as the main install guide. KDE Plasma
+ships with SDDM by default, so the tez theme works perfectly. Pick
+Plasma in the session menu.
+
+</details>
+
+<details>
+<summary>Xfce</summary>
+
+**1. Alacritty** — copy the config:
+
+```bash
+mkdir -p ~/.config/alacritty
+cp alacritty/alacritty.toml ~/.config/alacritty/
+```
+
+**2. picom** — Xfce has its own compositor (xfwm4), but picom works
+too. Disable xfwm4's compositor if you want to use picom instead:
+
+```bash
+xfconf-query -c xfwm4 -p /general/use_compositing -s false
+```
+
+Then copy picom config and autostart it:
+
+```bash
+mkdir -p ~/.config/picom
+cp picom/picom.conf ~/.config/picom/
+# Add to ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml:
+# or just run picom & in ~/.config/xfce4/xinitrc
+```
+
+**3. Wallpaper** — set via Xfce settings or command:
+
+```bash
+xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-path -s ~/walls/whysoetude247.jpg
+```
+
+**4. Lock screen** — bind in Xfce keyboard shortcuts:
+
+- Settings → Keyboard → Application Shortcuts → Add
+- Command: `~/.config/oxwm/lock.sh`
+- Shortcut: `Super+Shift+L`
+
+**5. Rofi** — bind in Xfce keyboard shortcuts:
+
+- Command: `rofi -show drun`, shortcut: `Super+D`
+- Command: `rofi -show bookmarks -modi bookmarks:$HOME/.config/oxwm/bookmarks.sh`, shortcut: `Super+F`
+
+**6. SDDM theme** — same steps as the main install guide. If using
+LightDM instead of SDDM, the theme won't apply (it's SDDM-specific).
+
+</details>
+
+<details>
+<summary>Cinnamon (Linux Mint)</summary>
+
+**1. Alacritty** — copy the config:
+
+```bash
+mkdir -p ~/.config/alacritty
+cp alacritty/alacritty.toml ~/.config/alacritty/
+```
+
+**2. picom** — Cinnamon has its own compositor (Muffin). If you want
+picom instead, disable Cinnamon's compositor first:
+
+```bash
+gsettings set org.cinnamon.desktop.window-manager compositing-enabled false
+```
+
+Then copy picom config and autostart it via `~/.config/autostart/`.
+
+**3. Wallpaper** — set via Cinnamon settings or command:
+
+```bash
+gsettings set org.cinnamon.desktop.background picture-uri "file://$HOME/walls/whysoetude247.jpg"
+```
+
+**4. Lock screen** — bind in Cinnamon keyboard shortcuts:
+
+- Settings → Keyboard → Shortcuts → Custom Shortcuts → Add
+- Command: `~/.config/oxwm/lock.sh`
+- Shortcut: `Super+Shift+L`
+
+**5. Rofi** — bind in Cinnamon keyboard shortcuts:
+
+- Command: `rofi -show drun`, shortcut: `Super+D`
+
+**6. SDDM theme** — Cinnamon uses LightDM by default on Linux Mint. If
+you switch to SDDM (`sudo apt install sddm; sudo dpkg-reconfigure sddm`),
+the tez theme works.
+
+</details>
+
+<details>
+<summary>MATE</summary>
+
+**1. Alacritty** — copy the config:
+
+```bash
+mkdir -p ~/.config/alacritty
+cp alacritty/alacritty.toml ~/.config/alacritty/
+```
+
+**2. picom** — MATE uses marco (or picom if configured). Copy picom
+config and autostart:
+
+```bash
+mkdir -p ~/.config/picom
+cp picom/picom.conf ~/.config/picom/
+# Add to System → Preferences → Personal → Startup Applications
+# or: mate-session-properties → Add → picom
+```
+
+**3. Wallpaper** — set via MATE settings or command:
+
+```bash
+gsettings set org.mate.desktop.background picture-filename ~/walls/whysoetude247.jpg
+```
+
+**4. Lock screen** — bind in MATE keyboard shortcuts:
+
+- System → Preferences → Hardware → Keyboard Shortcuts → Custom
+- Command: `~/.config/oxwm/lock.sh`
+- Shortcut: `Super+Shift+L`
+
+**5. Rofi** — bind in MATE keyboard shortcuts:
+
+- Command: `rofi -show drun`, shortcut: `Super+D`
+
+**6. SDDM theme** — MATE uses LightDM or GDM by default. Switch to
+SDDM if you want the tez theme.
+
+</details>
+
+<details>
+<summary>Budgie</summary>
+
+> **Note:** Budgie uses its own compositor (built into the Budgie WM)
+> and uses GNOME's lock screen infrastructure.
+
+**1. Alacritty** — copy the config:
+
+```bash
+mkdir -p ~/.config/alacritty
+cp alacritty/alacritty.toml ~/.config/alacritty/
+```
+
+**2. Wallpaper** — set via Budgie settings or gsettings:
+
+```bash
+gsettings set org.gnome.desktop.background picture-uri "file://$HOME/walls/whysoetude247.jpg"
+```
+
+**3. Lock screen** — Budgie uses GNOME's lock screen. xsecurelock
+isn't compatible with Budgie's session management — use the built-in
+lock (`Super+L`).
+
+**4. Rofi** — rofi works under Budgie (X11 or XWayland). Bind via
+Budgie's keyboard shortcut settings or gnome-keybindings.
+
+**5. SDDM theme** — Budgie uses GDM by default. Switch to SDDM if you
+want the tez theme.
+
+</details>
+
+<details>
+<summary>LXQt</summary>
+
+**1. Alacritty** — copy the config:
+
+```bash
+mkdir -p ~/.config/alacritty
+cp alacritty/alacritty.toml ~/.config/alacritty/
+```
+
+**2. picom** — LXQt works great with picom. Copy the config and
+autostart:
+
+```bash
+mkdir -p ~/.config/picom
+cp picom/picom.conf ~/.config/picom/
+# Add to LXQt Session Settings → Autostart
+```
+
+**3. Wallpaper** — set via LXQt settings (pcmanfm-qt handles the
+desktop):
+
+```bash
+pcmanfm-qt --set-wallpaper ~/walls/whysoetude247.jpg --wallpaper-mode=center
+```
+
+**4. Lock screen** — bind in LXQt keyboard shortcuts:
+
+- Settings → LXQt Settings → Shortcut Configuration
+- Command: `~/.config/oxwm/lock.sh`
+- Shortcut: `Super+Shift+L`
+
+**5. Rofi** — bind in LXQt keyboard shortcuts:
+
+- Command: `rofi -show drun`, shortcut: `Super+D`
+
+**6. SDDM theme** — LXQt uses SDDM by default! The tez theme works
+perfectly. Same steps as the main install guide.
+
+</details>
+
+---
+
+### Porting the palette to any WM/DE
 
 The colors, if you want to translate them into your WM's config format:
 
@@ -948,6 +1589,7 @@ fg     #e6edf3    cyan    #96d3e6    sep   #21262d
 green  #7ee787    blue    #79c0ff    (light blue #a5d6ff)
 yellow #e3b341    purple  #c0a6f0    orange #ffa657
 ```
+
 
 ## Keybinds (oxwm)
 
